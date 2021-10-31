@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { View, Text, Button, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
 
-function LoginPage() {
+function LoginPage({navigation}) {
     const [id, setId] = useState('');
     const [pw, setPw] = useState('');
 
@@ -37,7 +37,10 @@ function LoginPage() {
                 <Text style={styles.loginText}>Login</Text>
             </TouchableOpacity> 
 
-            <Text style={styles.register}>회원가입</Text>   
+            <Text 
+                style={styles.register}
+                onPress={() => navigation.navigate('home')}
+            >회원가입</Text>   
         </View>
     );
 }
