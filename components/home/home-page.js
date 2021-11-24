@@ -1,28 +1,21 @@
-import React, { useState, useCallback } from 'react'
-import { View, Text, TouchableOpacity  } from 'react-native';
+import React, { useState, useCallback, useRef } from 'react'
+import { StyleSheet, View, Text, TouchableOpacity  } from 'react-native';
 
 function HomePage() {
-    // let interval;
-    // const startedTime = Date.now();
-    // let start =  () => {
-    //     interval =  setInterval(() => 
-    //         setTime(Date.now() - startedTime), 10);
-    // }
-    // let end = () => {
-    //     clearInterval(interval);
-    // }
     const { count, start, stop, reset } = useCounter(0, 1000);
 
+    let min = Math.floor(count / 60);
+    let hour = Math.floor(min / 60);
     return (
         <View>
-            <Text>{count}</Text>
+            <Text style={styles.time}>{hour} : {min % 60} : {count % 60}</Text>
             <TouchableOpacity
                 onPress={start}>
                     <Text>시작</Text>
             </TouchableOpacity>
             <TouchableOpacity
                 onPress={stop}
-                >
+            >
                     <Text>정지</Text>
             </TouchableOpacity>
         </View>
@@ -37,7 +30,7 @@ function useCounter(initialValue, ms) {
             return;
         }
         intervalRef.current = setInterval(() => {
-            setCount(Date.now() - initialValue);
+            setCount(c => c+1);
         }, ms);
     }, []);
 
@@ -52,7 +45,16 @@ function useCounter(initialValue, ms) {
         setCount(0);
     }, []);
 
+
     return { count, start, stop, reset };
 }
+
+const styles = StyleSheet.create({
+    time : {
+        fontSize : '50',
+        color : 'tomato',
+        textAlign : 'center'
+    }
+})
 
 export default HomePage;
