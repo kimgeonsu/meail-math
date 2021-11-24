@@ -37,7 +37,7 @@ function useCounter(initialValue, ms) {
             return;
         }
         intervalRef.current = setInterval(() => {
-            setCount(c => c+1);
+            setCount(Date.now() - initialValue);
         }, ms);
     }, []);
 
