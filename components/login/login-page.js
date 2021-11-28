@@ -48,7 +48,7 @@ function LoginPage({navigation}) {
 const styles = StyleSheet.create({
     title : {
         color: '#207bd8',
-        fontSize: '20px;',
+        fontSize: '20',
         fontWeight: 'bolder',
         textAlign: 'center',
         marginBottom: 30
