@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { View, Text } from 'react-native';
 
-function RankingPage() {
+function ProfilePage() {
     
     return (
         <View>
-            <Text>랭킹 페이지</Text>
+            <Text>프로필 페이지</Text>
         </View>
     );
 }
 
-export default RankingPage;
+export default ProfilePage;

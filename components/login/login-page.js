@@ -15,11 +15,12 @@ function LoginPage({navigation}) {
     const onLogin = () => {
         console.log(id);
         console.log(pw);
+        navigation.navigate('homeTab');
     }
     
     return (
         <View>
-            <Text style={styles.title}>매수</Text>
+            <Text style={styles.title}>매일의 수학</Text>
             <TextInput
                 style={styles.input}
                 placeholder="ID"
@@ -39,7 +40,7 @@ function LoginPage({navigation}) {
 
             <Text 
                 style={styles.register}
-                onPress={() => navigation.navigate('home')}
+                onPress={() => navigation.navigate('register')}
             >회원가입</Text>   
         </View>
     );

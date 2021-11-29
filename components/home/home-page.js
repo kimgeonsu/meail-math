@@ -1,60 +1,61 @@
 import React, { useState, useCallback, useRef } from 'react'
 import { StyleSheet, View, Text, TouchableOpacity  } from 'react-native';
 
-function HomePage() {
-    const { count, start, stop, reset } = useCounter(0, 1000);
+import Card from './card';
 
-    let min = Math.floor(count / 60);
-    let hour = Math.floor(min / 60);
+
+function HomePage() {
+    const rooms = [];
+
     return (
         <View>
-            <Text style={styles.time}>{hour} : {min % 60} : {count % 60}</Text>
-            <TouchableOpacity
-                onPress={start}>
-                    <Text>시작</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-                onPress={stop}
-            >
-                    <Text>정지</Text>
+            <Text>홈 페이지입니다.</Text>
+            <View style={styles.context}>
+                <Text style={styles.title}>오늘의 공부시간</Text>
+                <Text style={styles.time}>12:12:12</Text>
+            </View>
+
+            <View style={styles.context}>
+                <Text style={styles.title}>나의 스터디룸</Text>
+                {rooms.map(room => (
+                    <Card prop={room} key={room.id} />
+                ))}
+            </View>
+
+            <View style={styles.context}>
+                <Text style={styles.title}>열려 있는 스터디룸</Text>
+                {rooms.map(room => (
+                    <Card prop={room} key={room.id} />
+                ))}
+            </View>
+
+            <TouchableOpacity activeOpacity={0.8} style={styles.btnMakeRoom}>
+                <Text>방 만들기</Text>
             </TouchableOpacity>
         </View>
     );
 }
 
-function useCounter(initialValue, ms) {
-    const [count, setCount] = useState(initialValue);
-    const intervalRef = useRef(null);
-    const start = useCallback(() => {
-        if (intervalRef.current !== null) {
-            return;
-        }
-        intervalRef.current = setInterval(() => {
-            setCount(c => c+1);
-        }, ms);
-    }, []);
-
-    const stop = useCallback(() => {
-        if (intervalRef.current === null) {
-            return;
-        }
-        clearInterval(intervalRef.current);
-        intervalRef.current = null;
-    }, []);
-    const reset = useCallback(() => {
-        setCount(0);
-    }, []);
-
-
-    return { count, start, stop, reset };
-}
+export default HomePage;
 
 const styles = StyleSheet.create({
-    time : {
-        fontSize : '50',
-        color : 'tomato',
-        textAlign : 'center'
+    context: {
+
+    },
+
+    card: {
+
+    },
+
+    title: {
+
+    },
+
+    time: {
+
+    },
+
+    btnMakeRoom: {
+
     }
 })
-
-export default HomePage;
