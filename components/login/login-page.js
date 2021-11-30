@@ -19,7 +19,7 @@ function LoginPage({navigation}) {
     }
     
     return (
-        <View>
+        <View style={styles.container}>
             <Text style={styles.title}>매일의 수학</Text>
             <TextInput
                 style={styles.input}
@@ -47,28 +47,42 @@ function LoginPage({navigation}) {
 }
 
 const styles = StyleSheet.create({
+    container: {
+        position: 'absolute',
+        top: 0,
+        bottom: 0,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#292929',
+        height: '100%',
+        width: '100%'
+    },
     title : {
-        color: '#207bd8',
-        fontSize: '20',
-        fontWeight: 'bolder',
+        color: '#ffc000',
+        fontSize: 35,
+        fontWeight: 'bold',
         textAlign: 'center',
         marginBottom: 30
     },
     input : {
-        border: '1px solid #ddd',
+        backgroundColor: '#ddd',
         borderRadius: 20,
-        padding: 10,
-        marginBottom: 10,
+        padding: 15,
+        marginBottom: 20,
+        width: '80%'
     },
     btnLogin : {
-        backgroundColor: '#207bd8',
+        backgroundColor: '#ffc000',
         marginTop: 30,
         borderRadius: 20,
         textAlign: 'center',
-        padding: 10 
+        padding: 10,
+        width: '40%'
     },
     loginText : {
         color: '#fff',
+        fontSize: 15,
+        textAlign: 'center'
     },
     register : {
         textAlign: 'center',
