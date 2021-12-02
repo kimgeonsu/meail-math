@@ -1,61 +1,92 @@
 import React, { useState, useCallback, useRef } from 'react'
-import { StyleSheet, View, Text, TouchableOpacity  } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity, SafeAreaView  } from 'react-native';
 
 import Card from './card';
 
 
 function HomePage() {
-    const rooms = [];
+    const rooms = [1,2,3,4];
 
     return (
-        <View>
-            <Text>홈 페이지입니다.</Text>
-            <View style={styles.context}>
+        <SafeAreaView style={styles.container}>
+            <View style={styles.banner}>
                 <Text style={styles.title}>오늘의 공부시간</Text>
                 <Text style={styles.time}>12:12:12</Text>
             </View>
 
             <View style={styles.context}>
                 <Text style={styles.title}>나의 스터디룸</Text>
-                {rooms.map(room => (
-                    <Card prop={room} key={room.id} />
-                ))}
+                <View style={styles.cards}>
+                    {rooms.map(room => (
+                        <Card style={styles.card} prop={room} key={room.id} />
+                    ))}
+                </View>
             </View>
 
             <View style={styles.context}>
                 <Text style={styles.title}>열려 있는 스터디룸</Text>
-                {rooms.map(room => (
-                    <Card prop={room} key={room.id} />
-                ))}
+                <View style={styles.cards}>
+                    {rooms.map(room => (
+                        <Card style={styles.card} prop={room} key={room.id} />
+                    ))}
+                </View>
             </View>
 
             <TouchableOpacity activeOpacity={0.8} style={styles.btnMakeRoom}>
-                <Text>방 만들기</Text>
+                <Text style={styles.makeText}>방 만들기</Text>
             </TouchableOpacity>
-        </View>
+        </SafeAreaView>
     );
 }
 
 export default HomePage;
 
 const styles = StyleSheet.create({
-    context: {
-
+    container: {
+        backgroundColor: '#292929'
     },
-
-    card: {
-
+    context: {
+        backgroundColor: '#445',
+        padding: 10,
+        margin: 20,
+        borderRadius: 20
+    },
+    banner: {
+        backgroundColor: '#ffc000',
+        borderRadius: 20,
+        padding: 10
+    },
+    cards: {
+        display: 'flex',
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        justifyContent: 'center'
     },
 
     title: {
-
+        color: '#fff',
+        fontSize: 15,
+        fontWeight: 'bold',
+        margin: 10
     },
 
     time: {
-
+        color: '#fff',
+        fontSize: 50,
+        textAlign: 'center'
     },
 
     btnMakeRoom: {
-
+        position: 'absolute',
+        bottom: 350,
+        backgroundColor: '#ffc000',
+        padding: 10,
+        borderRadius: 20,
+        left: '50%',
+        transform: [{ translateX: -25 }]
+    },
+    makeText: {
+        color: '#fff',
+        fontWeight: 'bold'
     }
 })
