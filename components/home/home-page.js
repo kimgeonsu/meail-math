@@ -2,9 +2,14 @@ import React, { useState, useCallback, useRef } from 'react'
 import { StyleSheet, View, Text, TouchableOpacity, SafeAreaView  } from 'react-native';
 
 import Card from './card';
-
+import CreateRoom from './createRoom'
 
 function HomePage() {
+    const [modalVisible, setModalVisible] = useState(false);
+    const getData = (e) => {
+        setModalVisible(e);
+    }
+
     const rooms = [1,2,3,4];
 
     return (
@@ -31,8 +36,9 @@ function HomePage() {
                     ))}
                 </View>
             </View>
-
-            <TouchableOpacity activeOpacity={0.8} style={styles.btnMakeRoom}>
+            
+            <CreateRoom prop={modalVisible} setData={getData}/>
+            <TouchableOpacity activeOpacity={0.8} style={styles.btnMakeRoom} onPress={() => {setModalVisible(true)}}>
                 <Text style={styles.makeText}>방 만들기</Text>
             </TouchableOpacity>
         </SafeAreaView>

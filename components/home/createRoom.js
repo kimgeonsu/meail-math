@@ -1,8 +1,7 @@
 import React, { useState } from 'react'
-import { Modal, StyleSheet, Text, View } from 'react-native'
+import { Modal, StyleSheet, Text, View, TextInput, TouchableOpacity } from 'react-native'
 
-function CreateRoom({ prop }) {
-    const [modalVisible, setModalVisible] = useState(prop);
+function CreateRoom({ prop, setData }) {
     const [title, setTitle] = useState('');
     const [subject, setSubject] = useState('');
     const [info, setInfo] = useState('');
@@ -12,28 +11,28 @@ function CreateRoom({ prop }) {
         <Modal
             animationType="slide"
             transparent={true}
-            visible={modalVisible}
+            visible={prop}
             onRequestClose={() => {
                 setModalVisible(!modalVisible);
             }}
         >
             <View style={styles.centeredView}>
                 <View style={styles.modalView}>
-                    <Text>방제</Text>
+                    <Text style={styles.inputText}>방제</Text>
                     <TextInput
                     style={styles.input}
                     placeholder="방제를 적어주세요"
                     onChangeText={(e) => {setTitle(e)}}
                     value={title}
                     />
-                    <Text>공부할 거</Text>
+                    <Text style={styles.inputText}>공부할 거</Text>
                     <TextInput
                     style={styles.input}
-                    placeholder="공부할 과목 또는 범위 또는 주제 자세하게~"
+                    placeholder="과목 or 범위 or 주제"
                     onChangeText={(e) => {setSubject(e)}}
                     value={subject}
                     />
-                    <Text>한 줄 소개</Text>
+                    <Text style={styles.inputText}>한 줄 소개</Text>
                     <TextInput
                     style={styles.input}
                     placeholder="간단하게 써주세요"
@@ -42,11 +41,10 @@ function CreateRoom({ prop }) {
                     />
 
                     <TouchableOpacity
-                        style={styles.btnNext}
-                        onPress={() => {setModalVisible(false)
-                        }}
+                        style={styles.btnMake}
+                        onPress={() => {setData(false)}}
                     >
-                        <Text style={styles.textNext}>만들기!</Text>
+                        <Text style={styles.textMake}>만들기!</Text>
                     </TouchableOpacity>
                 </View>
             </View>
@@ -64,10 +62,12 @@ const styles = StyleSheet.create({
         marginTop: 22
     },
     modalView: {
-        margin: 20,
+        width: '80%',
+        height: '50%',
+        margin: 10,
         backgroundColor: "white",
         borderRadius: 20,
-        padding: 35,
+        padding: 10,
         alignItems: "center",
         shadowColor: "#000",
         shadowOffset: {
@@ -78,5 +78,30 @@ const styles = StyleSheet.create({
         shadowRadius: 4,
         elevation: 5
     },
+    input: {
+        width: '90%',
+        marginTop: 5,
+        marginBottom: 5,
+        textAlign: 'center',
+        padding: 10,
+        borderRadius: 15,
+        fontSize: 15,
+        backgroundColor: '#ddd'
+    },
+    inputText: {
+        
+        fontSize: 15,
+        fontWeight: 'bold'
 
+    },
+    btnMake: {
+        backgroundColor: '#ffc000',
+        padding: 10,
+        borderRadius: 10,
+        marginTop: 20
+    },
+    textMake: {
+        color: '#fff',
+        fontWeight: 'bold'
+    }
 })
