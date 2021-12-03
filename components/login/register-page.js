@@ -100,8 +100,7 @@ function RegisterPage() {
             {step === 5 &&
                 <TouchableOpacity
                 style={styles.btnNext}
-                onPress={() => {setStep(step+1)
-                }}
+                onPress={() => {setStep(step+1)}}
                 >
                 <Text style={styles.textNext}>완료</Text>
                 </TouchableOpacity>
