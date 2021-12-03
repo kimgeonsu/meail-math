@@ -20,7 +20,10 @@ export default RankItem;
 const styles= StyleSheet.create({
     container: {
         display: 'flex',
-        flexDirection: 'row'
+        flexDirection: 'row',
+        borderRadius: 10,
+        padding: 10,
+
     },
     rank: {
         flex: 1
