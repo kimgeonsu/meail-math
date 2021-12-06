@@ -1,48 +1,51 @@
 import axios from 'axios'
 
 const api = axios.create({
-    baseURL: "localhost:8080/"
+    baseURL: "http://localhost:8080/"
 })
 
 export const member = {
     //회원가입
-    register: (id, password, name, year, phoneNumber) =>
-        api.post(`member`, {
-            id: id,
+    signup: (id, password, name, year, phoneNumber) =>
+        api.post(`auth/signup`, {
+            username: id,
             password: password, 
             name: name,
-            year: year,
-            phoneNumber: phoneNumber
+            phoneNumber: phoneNumber,
+            year: year
         })
         .then((res) => {
-            console.log(res);
+            return res.data;
         })
         .catch(e => {
             console.log(e)
         }),
 
     //아이디 중복 체크
-    checkId: (id) => api.get(`member`, {
-        params: {
-            id: id
-        }
-    })
-    .then((res) => {
-        console.log(res);
-    })
-    .catch(e => {
-        console.log(e);
-    }),
+    checkId: (id) => 
+        api.post(`auth/checkId`, {
+            username: id
+        })
+        .then((res) => {
+            return res.data;
+        })
+        .catch(e => {
+            console.log(e);
+        }),
 
     //로그인
-    login: (id, password) => api.get("login", {
-        id: id,
+    login: (id, password) => api.post("auth/login", {
+        username: id,
         password: password
     })
     .then(res => {
-        console.log(res);
+        return res.data;
     })
     .catch(e => {
         console.log(e);
     })
+}
+
+export const room = {
+    list: () => api.get(`room/list`, {})
 }
