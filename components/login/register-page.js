@@ -1,22 +1,42 @@
 import { Picker } from "@react-native-picker/picker";
 import React, { useState } from "react";
 import {View, StyleSheet, Text, TextInput, TouchableOpacity} from 'react-native';
+import { member, room } from "../../service/api";
 
-function RegisterPage() {
+function RegisterPage({ navigation }) {
     const [step, setStep] = useState(1);
     const [id, setId] = useState('');
     const [name, setName] = useState('');
-    const [year, setYear] = useState();
+    const [year, setYear] = useState(17);
     const [pw, setPw] = useState('');
     const [phoneNumber, setPhoneNumber] = useState('');
     const [checkPw, setCheckPw] = useState('');
+    const [validation, setValidation] = useState(false);
 
+    
+    const signupApi = async() => {
+        navigation.navigate('login')
+        return await member.signup(id, pw, name, year, phoneNumber);
+    }
+
+    const checkIdApi = async() => {
+        let checker = await member.checkId(id);
+        
+        if (checker.message) {
+            setValidation(false);
+        } else {
+            setValidation(true);
+        }
+    }
+
+    
     return (
         <View style={styles.container}>
             {step === 1 && 
-            <View style={styles.context}>
+            <View>
                 <Text style={styles.title}>이름을 알려주세요!</Text>
                 <TextInput
+                    autoFocus={true}
                     style={styles.input}
                     placeholder="Name"
                     onChangeText={(e) => {setName(e)}}
@@ -34,7 +54,7 @@ function RegisterPage() {
                 />
                 <TouchableOpacity
                 style={styles.btnCheck}
-                onPress={() => {}}
+                onPress={checkIdApi}
                 >
                 <Text style={styles.textCheck}>중복체크</Text>
             </TouchableOpacity>
@@ -74,12 +94,14 @@ function RegisterPage() {
                 <Text style={styles.title}>비밀번호를 설정해볼까요?</Text>
                 <TextInput
                     style={styles.input}
+                    secureTextEntry={true}
                     placeholder="password"
                     onChangeText={(e) => {setPw(e)}}
                     value={pw}
                 />
                 <TextInput
                     style={styles.input}
+                    secureTextEntry={true}
                     placeholder="one more time!"
                     onChangeText={(e) => {setCheckPw(e)}}
                     value={checkPw}
@@ -100,7 +122,7 @@ function RegisterPage() {
             {step === 5 &&
                 <TouchableOpacity
                 style={styles.btnNext}
-                onPress={() => {setStep(step+1)}}
+                onPress={signupApi}
                 >
                 <Text style={styles.textNext}>완료</Text>
                 </TouchableOpacity>

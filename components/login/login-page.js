@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+import { member } from '../../service/api';
 
 function LoginPage({navigation}) {
     const [id, setId] = useState('');
@@ -12,10 +15,19 @@ function LoginPage({navigation}) {
         setPw(input);
     }
 
-    const onLogin = () => {
-        console.log(id);
-        console.log(pw);
-        navigation.navigate('homeTab');
+    const onLogin = async() => {
+        try {
+            let res = await member.login(id, pw);
+            console.log(res);
+            if (res) {
+                navigation.navigate('homeTab');
+                await AsyncStorage.setItem('userInfo', JSON.stringify(res));
+            } else {
+                console.log("다시");
+            }
+        } catch(e) {
+            console.log(e);
+        }
     }
     
     return (
@@ -29,6 +41,7 @@ function LoginPage({navigation}) {
             />
             <TextInput
                 style={styles.input}
+                secureTextEntry={true}
                 placeholder="password"
                 onChangeText={InputPw}
                 value={pw}

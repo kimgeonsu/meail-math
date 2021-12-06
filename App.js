@@ -1,5 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, TextInput, View } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -48,6 +49,21 @@ function HomeTabs() {
 }
 
 export default function App() {
+
+  const token = async() => {
+    try {
+      const userInfo = await AsyncStorage.getItem('userInfo');
+      let  token = JSON.parse(userInfo);
+      if (token.token) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch(e) {
+      console.log(e);
+    }
+  }
+
   return (
     <NavigationContainer>
       <Stack.Navigator
