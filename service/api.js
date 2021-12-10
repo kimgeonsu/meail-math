@@ -47,5 +47,31 @@ export const member = {
 }
 
 export const room = {
-    list: () => api.get(`room/list`, {})
+    create: (title, subject, info) => api.post("room/create", {
+        title: title,
+        subject: subject,
+        info: info
+    })
+    .then(res => {return res.data;})
+    .catch(e => {console.log(e);})
+    ,
+
+    list: () => api.get("room/list"),
+
+    detail: () => api.get(`room/detail`),
+
+    enter: (roomId, userId) => api.post("room/enterRoom", {
+        title: roomId,
+        name: userId
+    })
+    .then(res => {return res.data;})
+    .catch(e => {console.log(e);})
+    ,
+
+    exit: (roomId, userId) => api.post("room/exitRoom", {
+        title: roomId,
+        name: userId
+    })
+    .then(res => {return res.data})
+    .catch(e => {console.log(e);})
 }

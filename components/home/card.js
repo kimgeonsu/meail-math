@@ -1,15 +1,29 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, Text } from 'react-native';
+import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
+import Icon from 'react-native-vector-icons/MaterialIcons'
 
-function Card({ prop }) {
+function Card({ prop, navigation }) {
     
+    const enterRoom = () => {
+        navigation.navigate('room', {
+            roomId: prop.id
+        })
+    }
+
+    const participent = [1,2,3,4,5,6,7,6];
+
     return (
-        <View style={styles.card}>
-            <Text style={styles.title}>{prop.title}제목이라구</Text>
+        <TouchableOpacity 
+            style={styles.card}
+            onPress={enterRoom}
+        >
             <Text style={styles.info}>{prop.subject}과목을 적으면 보여요 </Text>
-            <Text style={styles.info}>참여인원: {prop.allCount}</Text>
-            <Text style={styles.info}>공부중: {prop.ing}</Text>
-        </View>
+            <Text style={styles.title}>{prop.title}제목이라구</Text>
+            <View style={styles.profile}>{participent.map(person => <Text style={styles.emoji}>😆</Text>)}</View>
+            <View style={styles.names}>{participent.map(person => <Text style={styles.name}>이름</Text>)}</View>
+
+            <Icon name="people" style={styles.iconPeople} color={'#fff'} size={15} />
+        </TouchableOpacity>
     );
 }
 
@@ -17,14 +31,11 @@ export default Card;
 
 const styles = StyleSheet.create({
     card: {
-        width: '45%',
-        height: 180,
-        backgroundColor: '#2c2c34',
-        borderRadius: 30,
-        padding: 10,
-        margin: 5
+        backgroundColor: '#262626',
+        borderRadius: 15,
+        margin: 10,
+        padding: 10
     },
-    
     title: {
         color: '#fff',
         fontSize: 20,
@@ -35,5 +46,29 @@ const styles = StyleSheet.create({
         color: '#ddd',
         fontSize: 15,
         margin: 5
+    },
+    profile: {
+        display: 'flex',
+        flexDirection: 'row',
+        margin: 5
+    },
+    emoji: {
+        fontSize: 25
+    },
+    names: {
+        display: 'flex',
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        margin: 5
+    },
+    name: {
+        fontSize: 15,
+        color: '#ddd',
+        width: '25%',
+        margin: 5
+    },
+    iconPeople: {
+        marginTop: 10,
+        marginLeft: 10
     }
 })

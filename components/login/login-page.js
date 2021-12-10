@@ -18,9 +18,10 @@ function LoginPage({navigation}) {
     const onLogin = async() => {
         try {
             let res = await member.login(id, pw);
+            console.log(navigation);
+            navigation.navigate('homeTab');
             console.log(res);
             if (res) {
-                navigation.navigate('homeTab');
                 await AsyncStorage.setItem('userInfo', JSON.stringify(res));
             } else {
                 console.log("다시");
@@ -30,9 +31,10 @@ function LoginPage({navigation}) {
         }
     }
     
+
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>매일의 수학</Text>
+            <Text style={styles.title}>👩🏻‍🚀</Text>
             <TextInput
                 style={styles.input}
                 placeholder="ID"
@@ -47,8 +49,8 @@ function LoginPage({navigation}) {
                 value={pw}
             />
 
-            <TouchableOpacity activeOpacity={0.8} style={styles.btnLogin} onPress={onLogin} >
-                <Text style={styles.loginText}>Login</Text>
+            <TouchableOpacity activeOpacity={0.8} style={styles.btnLogin} onPress={() => {navigation.navigate('homeTab')}}>
+                <Text style={styles.loginText}>LOGIN</Text>
             </TouchableOpacity> 
 
             <Text 
@@ -66,13 +68,13 @@ const styles = StyleSheet.create({
         bottom: 0,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#292929',
+        backgroundColor: '#000',
         height: '100%',
         width: '100%'
     },
     title : {
-        color: '#ffc000',
-        fontSize: 35,
+        // color: '#ffc000',
+        fontSize: 80,
         fontWeight: 'bold',
         textAlign: 'center',
         marginBottom: 30
@@ -85,22 +87,22 @@ const styles = StyleSheet.create({
         width: '80%'
     },
     btnLogin : {
-        backgroundColor: '#ffc000',
+        backgroundColor: '#00cccc',
         marginTop: 30,
-        borderRadius: 20,
+        borderRadius: 40,
         textAlign: 'center',
         padding: 10,
-        width: '40%'
+        // width: '10%'
     },
     loginText : {
         color: '#fff',
-        fontSize: 15,
+        fontSize: 20,
         textAlign: 'center'
     },
     register : {
         textAlign: 'center',
-        marginTop: 10,
-        color: '#aaa',
+        marginTop: 30,
+        color: '#fff',
         fontSize: 12,
     }
 })

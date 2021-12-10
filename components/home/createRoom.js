@@ -1,11 +1,22 @@
 import React, { useState } from 'react'
-import { Modal, StyleSheet, Text, View, TextInput, TouchableOpacity } from 'react-native'
+import { Modal, StyleSheet, Text, View, TextInput, TouchableOpacity, KeyboardAvoidingView } from 'react-native'
+import Icon from 'react-native-vector-icons/MaterialIcons'
+
+import { room } from '../../service/api';
 
 function CreateRoom({ prop, setData }) {
     const [title, setTitle] = useState('');
     const [subject, setSubject] = useState('');
     const [info, setInfo] = useState('');
     
+    const onCreateRoom = async() => {
+        try {
+            let res = await room.create(title, subject, info);
+            setData(false);
+        } catch(e) {
+            console.log(e);
+        }
+    }
 
     return (
         <Modal
@@ -17,8 +28,10 @@ function CreateRoom({ prop, setData }) {
             }}
         >
             <View style={styles.centeredView}>
-                <View style={styles.modalView}>
-                    <Text style={styles.inputText}>방제</Text>
+                <KeyboardAvoidingView 
+                    behavior={Platform.OS === "ios" ? "padding" : "height"}
+                    style={styles.modalView}>
+                    {/* <Text style={styles.inputText}>방제</Text>
                     <TextInput
                     style={styles.input}
                     placeholder="방제를 적어주세요"
@@ -42,11 +55,37 @@ function CreateRoom({ prop, setData }) {
 
                     <TouchableOpacity
                         style={styles.btnMake}
-                        onPress={() => {setData(false)}}
+                        onPress={onCreateRoom}
+                    >
+                        <Text style={styles.textMake}>만들기!</Text>
+                    </TouchableOpacity> */}
+
+                    <View style={styles.wrapper}>
+                        <TouchableOpacity style={styles.btnSubject}>
+                            <Text style={styles.subjectText}>
+                                <Icon name="add" color="#fff" size={15} />
+                                과목설정
+                            </Text>
+                        </TouchableOpacity>
+                    </View>
+
+                    <TextInput
+                    multiline={true}
+                    numberOfLines={3}
+                    style={styles.input}
+                    placeholder="무슨 공부를 시작해볼까요?"
+                    placeholderTextColor={'#fff'}
+                    onChangeText={(e) => {setTitle(e)}}
+                    value={subject}
+                    />
+
+                    <TouchableOpacity
+                        style={styles.btnMake}
+                        onPress={onCreateRoom}
                     >
                         <Text style={styles.textMake}>만들기!</Text>
                     </TouchableOpacity>
-                </View>
+                </KeyboardAvoidingView>
             </View>
         </Modal>
     );
@@ -57,50 +96,55 @@ export default CreateRoom;
 const styles = StyleSheet.create({
     centeredView: {
         flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-        marginTop: 22
+        // justifyContent: "center",
+        // alignItems: "center",
     },
     modalView: {
-        width: '80%',
-        height: '50%',
-        margin: 10,
-        backgroundColor: "white",
-        borderRadius: 20,
         padding: 10,
         alignItems: "center",
         shadowColor: "#000",
         shadowOffset: {
             width: 0,
-            height: 2
+            height: 5
         },
         shadowOpacity: 0.25,
         shadowRadius: 4,
-        elevation: 5
+        // elevation: 0
+        position: 'absolute',
+        bottom: 0,
+        backgroundColor: '#222',
+        width: "100%",
+        borderRadius: 20
     },
-    input: {
-        width: '90%',
-        marginTop: 5,
-        marginBottom: 5,
-        textAlign: 'center',
+    wrapper: {
+        width: '100%'
+    },  
+    btnSubject: {
+        width: '25 %',
         padding: 10,
         borderRadius: 15,
+        backgroundColor: '#344',
+        margin: 10,
+    },  
+    subjectText: {
+        color: '#fff',
         fontSize: 15,
-        backgroundColor: '#ddd'
+        textAlignVertical: 'center'
     },
-    inputText: {
-        
-        fontSize: 15,
-        fontWeight: 'bold'
-
+    input: {
+        width: '100%',
+        height: 100,
+        color: '#fff',
+        fontSize: 20
     },
     btnMake: {
-        backgroundColor: '#ffc000',
+        backgroundColor: '#00cccc',
         padding: 10,
-        borderRadius: 10,
-        marginTop: 20
+        borderRadius: 15,
+        margin: 20,
     },
     textMake: {
+        textAlign: 'center',
         color: '#fff',
         fontWeight: 'bold'
     }

@@ -10,6 +10,8 @@ import LoginPage from './components/login/login-page';
 import RegisterPage from './components/login/register-page';
 import HomePage from './components/home/home-page';
 import RankingPage from './components/ranking/ranking-page';
+import RoomPage from './components/home/room';
+import FriendsPage from './components/fiends/friendsPage';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -17,24 +19,17 @@ const Tab = createBottomTabNavigator();
 function HomeTabs() {
   return (
     <Tab.Navigator
+      initialRouteName='Home'
       screenOptions={() => ({
         headerShown: false,
-        tabBarActiveTintColor: '#F6BB43',
-        tabBarInactiveTintColor: 'gray',
+        tabBarActiveTintColor: '#00cccc',
+        tabBarInactiveTintColor: 'lightgray',
         tabBarStyle: {
-          backgroundColor: '#292929',
-          borderRadius: '20',
+          backgroundColor: '#000',
+          borderTopColor: "transparent"
         }
         })}
     >
-      <Tab.Screen 
-        name="Home"
-        component={HomePage}
-        options={{
-          tabBarLabel: "홈",
-          tabBarIcon:(({color}) => <Icon name="home" color={color} size={26} />)
-        }}
-      />
       <Tab.Screen 
         name="Ranking"
         
@@ -44,25 +39,30 @@ function HomeTabs() {
           tabBarIcon:(({color}) => <Icon name="emoji-events" color={color} size={26} />)
         }}  
       />
+      <Tab.Screen 
+        name="Home"
+        component={HomePage}
+        options={{
+          tabBarLabel: "홈",
+          tabBarIcon:(({color}) => <Icon name="home" color={color} size={26} />),
+          
+        }}
+      />
+      
+      <Tab.Screen 
+        name="Friends"
+        
+        component={FriendsPage}
+        options={{
+          tabBarLabel: "친구",
+          tabBarIcon:(({color}) => <Icon name="groups" color={color} size={26} />)
+        }}  
+      />
     </Tab.Navigator>
   );
 }
 
 export default function App() {
-
-  const token = async() => {
-    try {
-      const userInfo = await AsyncStorage.getItem('userInfo');
-      let  token = JSON.parse(userInfo);
-      if (token.token) {
-        return true;
-      } else {
-        return false;
-      }
-    } catch(e) {
-      console.log(e);
-    }
-  }
 
   return (
     <NavigationContainer>
@@ -74,6 +74,7 @@ export default function App() {
         <Stack.Screen name="login" component={LoginPage} />
         <Stack.Screen name="register" component={RegisterPage} />
         <Stack.Screen name="homeTab" component={HomeTabs} />
+        <Stack.Screen name="room" component={RoomPage} />
       </Stack.Navigator>
     </NavigationContainer>
   );
