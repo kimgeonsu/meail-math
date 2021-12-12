@@ -4,7 +4,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons'
 
 import { room } from '../../service/api';
 
-function CreateRoom({ prop, setData }) {
+function CreateRoom({ prop, setData, navigation }) {
     const [title, setTitle] = useState('');
     const [subject, setSubject] = useState('');
     const [info, setInfo] = useState('');
@@ -16,6 +16,11 @@ function CreateRoom({ prop, setData }) {
         } catch(e) {
             console.log(e);
         }
+    }
+
+    const goSelectCategory = () => {
+        setData(false);
+        navigation.navigate('categoryPage')
     }
 
     return (
@@ -30,38 +35,10 @@ function CreateRoom({ prop, setData }) {
             <View style={styles.centeredView}>
                 <KeyboardAvoidingView 
                     behavior={Platform.OS === "ios" ? "padding" : "height"}
-                    style={styles.modalView}>
-                    {/* <Text style={styles.inputText}>방제</Text>
-                    <TextInput
-                    style={styles.input}
-                    placeholder="방제를 적어주세요"
-                    onChangeText={(e) => {setTitle(e)}}
-                    value={title}
-                    />
-                    <Text style={styles.inputText}>공부할 거</Text>
-                    <TextInput
-                    style={styles.input}
-                    placeholder="과목 or 범위 or 주제"
-                    onChangeText={(e) => {setSubject(e)}}
-                    value={subject}
-                    />
-                    <Text style={styles.inputText}>한 줄 소개</Text>
-                    <TextInput
-                    style={styles.input}
-                    placeholder="간단하게 써주세요"
-                    onChangeText={(e) => {setInfo(e)}}
-                    value={info}
-                    />
-
-                    <TouchableOpacity
-                        style={styles.btnMake}
-                        onPress={onCreateRoom}
-                    >
-                        <Text style={styles.textMake}>만들기!</Text>
-                    </TouchableOpacity> */}
-
+                    style={styles.modalView}
+                >
                     <View style={styles.wrapper}>
-                        <TouchableOpacity style={styles.btnSubject}>
+                        <TouchableOpacity style={styles.btnSubject} onPress={goSelectCategory}>
                             <Text style={styles.subjectText}>
                                 <Icon name="add" color="#fff" size={15} />
                                 과목설정
@@ -71,12 +48,13 @@ function CreateRoom({ prop, setData }) {
 
                     <TextInput
                     multiline={true}
+                    autoFocus={true}
                     numberOfLines={3}
                     style={styles.input}
                     placeholder="무슨 공부를 시작해볼까요?"
                     placeholderTextColor={'#fff'}
                     onChangeText={(e) => {setTitle(e)}}
-                    value={subject}
+                    value={title}
                     />
 
                     <TouchableOpacity

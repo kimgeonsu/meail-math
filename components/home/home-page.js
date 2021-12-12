@@ -13,9 +13,6 @@ import StudyGraph from './studyGraph';
 function HomePage({ navigation }) {
     const [modalVisible, setModalVisible] = useState(false);
     const [rooms, setRooms] = useState([]);
-    const getData = (e) => {
-        setModalVisible(e);
-    }
 
     const aaa = [1,2,3,4,5,6];
     // useEffect(async() => {
@@ -50,26 +47,7 @@ function HomePage({ navigation }) {
     }
 
     return (
-        <SafeAreaView style={styles.container}>
-            {/* <View style={styles.banner}>
-                <Text style={styles.title}>오늘의 공부시간</Text>
-                <Text style={styles.time}>12:12:12</Text>
-            </View>
-
-            <ScrollView style={styles.context}>
-                <Text style={styles.title}>열려 있는 스터디룸</Text>
-                <View style={styles.cards}>
-                    {rooms.map(room => (
-                        <Card prop={room} navigation={navigation} />
-                    ))}
-                </View>
-            </ScrollView>
-            
-            <CreateRoom prop={modalVisible} setData={getData}/>
-            <TouchableOpacity activeOpacity={0.8} style={styles.btnMakeRoom} onPress={() => {setModalVisible(true)}}>
-                <Text style={styles.makeText}>방 만들기</Text>
-            </TouchableOpacity> */}
-            
+        <SafeAreaView style={styles.container}>            
             {/* 헤더 */}
             <View style={styles.header}>
                 <Icon name="search" color={'#fff'} size={30} />
@@ -87,12 +65,12 @@ function HomePage({ navigation }) {
                 <View>
                     <Text style={styles.textNow}>Now</Text>
                     {aaa.map(room => (
-                            <Card prop={room} navigation={navigation} />
+                            <Card setData={setModalVisible} prop={room} navigation={navigation} />
                         ))}
                 </View>
             </ScrollView>
 
-            <CreateRoom prop={modalVisible} setData={getData}/>
+            <CreateRoom prop={modalVisible} navigation={navigation}/>
             <Icon onPress={() => setModalVisible(true)} name="add-circle" style={styles.addCircle} color={'#fff'} size={50} />
         </SafeAreaView>
     );

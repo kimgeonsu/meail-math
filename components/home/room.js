@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useRef } from 'react'
-import { StyleSheet, View, Text, TouchableOpacity  } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity, SafeAreaView  } from 'react-native';
 
 function RoomPage({ route }) {
     const { roomId } = route.params;
@@ -8,13 +8,12 @@ function RoomPage({ route }) {
     let min = Math.floor(count / 60);
     let hour = Math.floor(min / 60);
 
-    
+    const tmp = [1,2,3,4,5,6,7,8,9];
 
     return (
-        <View>
-            <Text>방 제목: 뭐시기뭐시기</Text>
-            <Text>이런이런 과목을 공부해요</Text>
-            <View>
+        <SafeAreaView>
+            <Text style={styles.title}>제목이 들어가는 자리에요</Text>
+            <View style={styles.timeWrapper}>
                 <Text style={styles.time}>{hour} : {min % 60} : {count % 60}</Text>
                 <TouchableOpacity
                     onPress={start}>
@@ -26,13 +25,28 @@ function RoomPage({ route }) {
                         <Text>정지</Text>
                 </TouchableOpacity>
             </View>
-            <View>
-                <Text>한줄 소개가 여기에 주루루루룩 들어갈거구요</Text>
+            <View style={styles.userTable}>
+                {tmp.map(user => <View style={styles.friends}>
+                    <Text style={styles.profile}>👨🏿‍🚀</Text>
+                    <Text style={styles.name}>이름</Text>
+                    <Text style={styles.friendTime}>00:00:00</Text>
+                </View>)}
             </View>
-            <View>
-                <Text>🐣</Text>
+
+            <View style={styles.footer}>
+                <TouchableOpacity style={styles.btnExit}>
+                    <Text style={styles.textExit}>나가기</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity style={styles.btnStop} onPress={stop}>
+                    <Text style={styles.textExit}>정지</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity style={styles.btnStop} onPress={start}>
+                    <Text style={styles.textStop}>재개</Text>
+                </TouchableOpacity>
             </View>
-        </View>
+        </SafeAreaView>
     );
 }
 
@@ -64,10 +78,62 @@ function useCounter(initialValue, ms) {
 }
 
 const styles = StyleSheet.create({
+    timeWrapper: {
+
+    },
+    
     time : {
         fontSize : '50',
         color : 'tomato',
         textAlign : 'center'
+    },
+
+    title: {
+
+    },
+
+    userTable: {
+        display: 'flex',
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        margin: 5
+    },
+
+    profile: {
+        fontSize: 100
+    },
+
+    friends: {
+        width: '33%',
+        
+    },
+
+    name: {
+        textAlign: 'center'
+    },
+
+    friendTime: {
+
+    },
+
+    footer: {
+
+    },
+
+    btnStop: {
+
+    },
+
+    textStop: {
+
+    },
+
+    btnExit: {
+
+    },
+
+    textExit: {
+
     }
 })
 

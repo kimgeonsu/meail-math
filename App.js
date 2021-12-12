@@ -12,6 +12,7 @@ import HomePage from './components/home/home-page';
 import RankingPage from './components/ranking/ranking-page';
 import RoomPage from './components/home/room';
 import FriendsPage from './components/fiends/friendsPage';
+import CategoryPage from './components/home/selectCategory';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -75,13 +76,8 @@ export default function App() {
         <Stack.Screen name="register" component={RegisterPage} />
         <Stack.Screen name="homeTab" component={HomeTabs} />
         <Stack.Screen name="room" component={RoomPage} />
+        <Stack.Screen name="categoryPage" component={CategoryPage} />
       </Stack.Navigator>
     </NavigationContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor: '#000',
-  },
-});
