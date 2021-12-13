@@ -1,6 +1,6 @@
 import { Picker } from "@react-native-picker/picker";
 import React, { useState } from "react";
-import {View, StyleSheet, Text, TextInput, TouchableOpacity, Platform} from 'react-native';
+import {View, StyleSheet, Text, TextInput, TouchableOpacity} from 'react-native';
 import { SafeAreaView } from "react-native-safe-area-context";
 import KeyboardAvoidingView from "react-native/Libraries/Components/Keyboard/KeyboardAvoidingView";
 import { member, room } from "../../service/api";

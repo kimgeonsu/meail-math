@@ -4,22 +4,22 @@ import Icon from 'react-native-vector-icons/MaterialIcons'
 
 import { room } from '../../service/api';
 
-function CreateRoom({ prop, setData, navigation }) {
+function CreateRoom({ prop, setData, navigation, getData }) {
     const [title, setTitle] = useState('');
     const [subject, setSubject] = useState('');
     const [info, setInfo] = useState('');
     
     const onCreateRoom = async() => {
         try {
-            let res = await room.create(title, subject, info);
-            setData(false);
+            // let res = await room.create(title, subject, info);
+            getData(false);
         } catch(e) {
             console.log(e);
         }
     }
 
     const goSelectCategory = () => {
-        setData(false);
+        getData(false);
         navigation.navigate('categoryPage')
     }
 

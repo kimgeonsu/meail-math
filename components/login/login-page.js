@@ -50,7 +50,7 @@ function LoginPage({navigation}) {
             />
 
             <TouchableOpacity activeOpacity={0.8} style={styles.btnLogin} onPress={() => {navigation.navigate('homeTab')}}>
-                <Text style={styles.loginText}>LOGIN</Text>
+                <Text style={styles.loginText}>로그인</Text>
             </TouchableOpacity> 
 
             <Text 
@@ -91,19 +91,19 @@ const styles = StyleSheet.create({
         marginTop: 30,
         borderRadius: 40,
         textAlign: 'center',
-        padding: 10,
-        // width: '10%'
+        padding: 15,
+        width: '80%'
     },
     loginText : {
         color: '#fff',
-        fontSize: 20,
+        fontSize: 15,
         textAlign: 'center'
     },
     register : {
         textAlign: 'center',
         marginTop: 30,
         color: '#fff',
-        fontSize: 12,
+        fontSize: 15,
     }
 })
 

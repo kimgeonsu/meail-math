@@ -30,20 +30,24 @@ function HomePage({ navigation }) {
         getRooms()
     }, []);
     useEffect(() => {
-        console.log('몇번되엇니');
         console.log(rooms);
     },[rooms])
 
     const getRooms = async() => {
         try {
+            console.log("i'm debugging");
             let res =  await room.list();
-        const arr = res.data;
-        console.log(arr);
-        setRooms(arr);
-        // console.log(rooms);
+            const arr = res.data;
+            console.log(res);
+            setRooms(arr);
         } catch(e) {
             console.log(e);
         }
+    }
+
+    const getModalVisible = (data) => {
+        setModalVisible(data);
+        console.log("hihi");
     }
 
     return (
@@ -64,13 +68,13 @@ function HomePage({ navigation }) {
                 {/* 방 목록 */}
                 <View>
                     <Text style={styles.textNow}>Now</Text>
-                    {aaa.map(room => (
+                    {rooms.map(room => (
                             <Card setData={setModalVisible} prop={room} navigation={navigation} />
                         ))}
                 </View>
             </ScrollView>
 
-            <CreateRoom prop={modalVisible} navigation={navigation}/>
+            <CreateRoom prop={modalVisible} navigation={navigation} getData={getModalVisible}/>
             <Icon onPress={() => setModalVisible(true)} name="add-circle" style={styles.addCircle} color={'#fff'} size={50} />
         </SafeAreaView>
     );
