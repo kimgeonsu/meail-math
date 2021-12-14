@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, SafeAreaView } from 'react-native';
 
 function FriendsPage() {
     
     return (
-        <View>
-            <Text>친구 페이지</Text>
-        </View>
+        <SafeAreaView>
+            <Text>친구 페이지는 아직 공사중이에요</Text>
+        </SafeAreaView>
     );
 }
 

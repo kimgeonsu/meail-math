@@ -11,7 +11,7 @@ function CreateRoom({ prop, setData, navigation, getData }) {
     
     const onCreateRoom = async() => {
         try {
-            // let res = await room.create(title, subject, info);
+            let res = await room.create(title, subject, info);
             getData(false);
         } catch(e) {
             console.log(e);

@@ -1,15 +1,14 @@
 import { Picker } from "@react-native-picker/picker";
 import React, { useState } from "react";
-import {View, StyleSheet, Text, TextInput, TouchableOpacity} from 'react-native';
-import { SafeAreaView } from "react-native-safe-area-context";
+import {SafeAreaView, View, StyleSheet, Text, TextInput, TouchableOpacity} from 'react-native';
 import KeyboardAvoidingView from "react-native/Libraries/Components/Keyboard/KeyboardAvoidingView";
-import { member, room } from "../../service/api";
+import { member } from "../../service/api";
 
 function RegisterPage({ navigation }) {
     const [step, setStep] = useState(1);
     const [id, setId] = useState('');
     const [name, setName] = useState('');
-    const [year, setYear] = useState(17);
+    const [year, setYear] = useState(14);
     const [pw, setPw] = useState('');
     const [phoneNumber, setPhoneNumber] = useState('');
     const [checkPw, setCheckPw] = useState('');
@@ -17,15 +16,41 @@ function RegisterPage({ navigation }) {
     const [emoji, setEmoji] = useState('👩🏻‍🚀')
     
     const signupApi = async() => {
+        let res = await member.signup(id, pw, name, year, phoneNumber);
+        console.log(res);
         navigation.navigate('login')
-        return await member.signup(id, pw, name, year, phoneNumber);
+    }
+
+    const checkName = () => {
+        if (name.length === 0 || name.length > 4) {
+            setValidation(false);
+        } else {
+            setValidation(true);
+        }
     }
 
     const checkIdApi = async() => {
         let checker = await member.checkId(id);
-        
+        console.log(checker);
         if (checker.message) {
             setValidation(false);
+            alert("이미 존재하는 닉네임입니다")
+        } else {
+            setValidation(true);
+        }
+    }
+
+    const checkPhoneNumber = () => {
+        if (phoneNumber.length >= 10) {
+            setValidation(true);
+        } else {
+            setValidation(false);
+        }
+    }
+
+    const checkPwEqual = (data) => {
+        if (pw === data) {
+            setValidation(true);
         } else {
             setValidation(true);
         }
@@ -43,8 +68,8 @@ function RegisterPage({ navigation }) {
                         <TextInput
                             autoFocus={true}
                             style={styles.input}
-                            placeholder="꼭 실명을 알려주세요"
-                            onChangeText={(e) => {setName(e)}}
+                            placeholder="꼭 실명을 적어주세요"
+                            onChangeText={(e) => {setName(e); checkName()}}
                             value={name}
                         />
                     </View>
@@ -75,7 +100,7 @@ function RegisterPage({ navigation }) {
                                 selectedValue={year}
                                 useNativeAndroidPickerStyle={false}
                                 onValueChange={(itemValue, itemIndex) =>
-                                    setYear(itemValue)
+                                    {setYear(itemValue); setValidation(true);}
                             }>
                                 <Picker.Item color={Platform.OS === "ios" ? "#fff" : 'gray'} label="중1" value='14' />
                                 <Picker.Item color={Platform.OS === "ios" ? "#fff" : 'gray'} label="중2" value='15' />
@@ -94,7 +119,7 @@ function RegisterPage({ navigation }) {
                             style={styles.input}
                             placeholder="'-'없이 입력해주세요"
                             keyboardType="number-pad"
-                            onChangeText={(e) => {setPhoneNumber(e)}}
+                            onChangeText={(e) => {setPhoneNumber(e); checkPhoneNumber()}}
                             value={phoneNumber}
                         />
                     </View>
@@ -107,14 +132,14 @@ function RegisterPage({ navigation }) {
                             style={styles.input}
                             secureTextEntry={true}
                             placeholder="영어와 숫자 조합해서!"
-                            onChangeText={(e) => {setPw(e)}}
+                            onChangeText={(e) => {setPw(e); checkPwEqual(e);}}
                             value={pw}
                         />
                         <TextInput
                             style={styles.input}
                             secureTextEntry={true}
                             placeholder="똑같이 한번만 더!"
-                            onChangeText={(e) => {setCheckPw(e)}}
+                            onChangeText={(e) => {setCheckPw(e); console.log(e); console.log("pw",pw); checkPwEqual(e);}}
                             value={checkPw}
                         />
                     </View>
@@ -136,8 +161,11 @@ function RegisterPage({ navigation }) {
                 {step !== 6 &&
                     <TouchableOpacity
                     style={styles.btnNext}
-                    onPress={() => {setStep(step+1)
+                    onPress={() => {
+                        setStep(step+1);
+                        setValidation(false);
                     }}
+                    disabled={!validation}
                     >
                         <Text style={styles.textNext}>다음으로</Text>
                     </TouchableOpacity>
@@ -197,7 +225,6 @@ const styles = StyleSheet.create({
         borderColor: '#00cccc',
         padding: 15,
         width: '30%',
-        float: 'right'
     },
     textCheck: {
         textAlign: 'center',

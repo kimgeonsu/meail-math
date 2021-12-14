@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useRef, useEffect } from 'react'
-import { StyleSheet, View, Text, TouchableOpacity, SafeAreaView, SectionList  } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity, SafeAreaView, SectionList, RefreshControl  } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import { ScrollView } from 'react-native-gesture-handler';
 import { room } from '../../service/api';
@@ -12,34 +12,29 @@ import StudyGraph from './studyGraph';
 
 function HomePage({ navigation }) {
     const [modalVisible, setModalVisible] = useState(false);
+    const [refreshing, setRefreshing] = useState(false);
     const [rooms, setRooms] = useState([]);
 
-    const aaa = [1,2,3,4,5,6];
-    // useEffect(async() => {
-    //     try {
-    //         let res =  await room.list();
-    //         const arr = res.data;
-    //         console.log(arr);
-    //         setRooms([...rooms, arr]);
-    //         console.log(rooms);
-    //     } catch(e) {
-    //         console.log(e);
-    //     }
-    // })
     useEffect(() => {
+        console.log("나는????");
         getRooms()
     }, []);
+
     useEffect(() => {
-        console.log(rooms);
+        console.log("이건가욤");
     },[rooms])
 
     const getRooms = async() => {
+        setRefreshing(true);
         try {
             console.log("i'm debugging");
             let res =  await room.list();
-            const arr = res.data;
+            console.log(res.data);
+            if (res) {
+                setRooms(res.data);
+                setRefreshing(false);
+            }
             console.log(res);
-            setRooms(arr);
         } catch(e) {
             console.log(e);
         }
@@ -61,7 +56,15 @@ function HomePage({ navigation }) {
                 </View>
             </View>
             
-            <ScrollView>
+            <ScrollView
+                refreshControl={
+                    <RefreshControl
+                        refreshing={refreshing}
+                        onRefresh={getRooms}
+                        tintColor='#fff'
+                    />
+                }
+            >
                 <TimeBanner />
                 <StudyGraph />
 
