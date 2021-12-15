@@ -34,9 +34,10 @@ function RegisterPage({ navigation }) {
         console.log(checker);
         if (checker.message) {
             setValidation(false);
-            alert("이미 존재하는 닉네임입니다")
+            alert("이미 존재하는 닉네임입니다");
         } else {
             setValidation(true);
+            alert("사용할 수 있는 닉네임입니다");
         }
     }
 

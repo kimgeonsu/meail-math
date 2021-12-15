@@ -37,14 +37,14 @@ function LoginPage({navigation}) {
             <Text style={styles.title}>👩🏻‍🚀</Text>
             <TextInput
                 style={styles.input}
-                placeholder="ID"
+                placeholder="닉네임"
                 onChangeText={InputId}
                 value={id}
             />
             <TextInput
                 style={styles.input}
                 secureTextEntry={true}
-                placeholder="password"
+                placeholder="비밀번호"
                 onChangeText={InputPw}
                 value={pw}
             />
