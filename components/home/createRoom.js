@@ -1,17 +1,21 @@
 import React, { useState } from 'react'
 import { Modal, StyleSheet, Text, View, TextInput, TouchableOpacity, KeyboardAvoidingView } from 'react-native'
+import { ScrollView } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/MaterialIcons'
 
 import { room } from '../../service/api';
+import CategoryPage from './selectCategory';
 
-function CreateRoom({ prop, setData, navigation, getData }) {
+function CreateRoom({ prop, navigation, getData }) {
     const [title, setTitle] = useState('');
-    const [subject, setSubject] = useState('');
+    const [subjects, setSubjects] = useState([]);
     const [info, setInfo] = useState('');
+    const [modalVisible, setModalVisible] = useState(false);
     
     const onCreateRoom = async() => {
         try {
-            let res = await room.create(title, subject, info);
+            let res = await room.create(title, "미적분", "안녕");
+            setTitle('');
             getData(false);
         } catch(e) {
             console.log(e);
@@ -19,8 +23,7 @@ function CreateRoom({ prop, setData, navigation, getData }) {
     }
 
     const goSelectCategory = () => {
-        getData(false);
-        navigation.navigate('categoryPage')
+        setModalVisible(true);
     }
 
     return (
@@ -29,7 +32,7 @@ function CreateRoom({ prop, setData, navigation, getData }) {
             transparent={true}
             visible={prop}
             onRequestClose={() => {
-                setModalVisible(!modalVisible);
+                getData(false);
             }}
         >
             <View style={styles.centeredView}>
@@ -37,14 +40,26 @@ function CreateRoom({ prop, setData, navigation, getData }) {
                     behavior={Platform.OS === "ios" ? "padding" : "height"}
                     style={styles.modalView}
                 >
-                    <View style={styles.wrapper}>
-                        <TouchableOpacity style={styles.btnSubject} onPress={goSelectCategory}>
-                            <Text style={styles.subjectText}>
-                                <Icon name="add" color="#fff" size={15} />
-                                과목설정
-                            </Text>
-                        </TouchableOpacity>
-                    </View>
+                    <CategoryPage setSelect={setSubjects} setModalVisible={setModalVisible} modalVisible={modalVisible} />
+                    {subjects.length === 0 &&
+                        <View style={styles.wrapper}>
+                            <TouchableOpacity style={styles.btnSubject} onPress={goSelectCategory}>
+                                <Text style={styles.subjectText}>
+                                    <Icon name="add" color="#fff" size={15} />
+                                    과목설정
+                                </Text>
+                            </TouchableOpacity>
+                        </View>
+                    }
+                    {subjects.length > 0 &&
+                        <ScrollView horizontal={true} style={{marginBottom: 20}}>
+                            {subjects.map(e => 
+                                <View style={styles.selectedCover}>
+                                    <Text style={styles.selectedCategories}>{e}</Text>
+                                </View>
+                            )}
+                        </ScrollView>
+                    }
 
                     <TextInput
                     multiline={true}
@@ -125,5 +140,15 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         color: '#fff',
         fontWeight: 'bold'
+    },
+    selectedCover: {
+        backgroundColor: '#00cccc',
+        margin: 5,
+        borderRadius: 15,
+        padding: 5
+    },
+    selectedCategories: {
+        color: '#fff',
+        fontSize: 15
     }
 })

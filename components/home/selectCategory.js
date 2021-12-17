@@ -1,18 +1,9 @@
+import { StatusBar } from 'expo-status-bar'
 import React, { useState } from 'react'
 import { Modal, StyleSheet, Text, View, TextInput, TouchableOpacity, KeyboardAvoidingView, SafeAreaView, ScrollView, SectionList } from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 
-function CategoryPage({navigation}) {
-
-    const categories1 = [
-        {icon: 'aa', subject: 'aa'},
-        {icon: 'aa', subject: 'aa'},
-        {icon: 'aa', subject: 'aa'},
-        {icon: 'aa', subject: 'aa'},
-        {icon: 'aa', subject: 'aa'},
-        {icon: 'aa', subject: 'aa'}
-    ]
-
+function CategoryPage({navigation, setSelect, setModalVisible, modalVisible}) {
     const subjects = [
         {
             title: '수학(상)',
@@ -43,49 +34,82 @@ function CategoryPage({navigation}) {
             data: ["이차곡선", "평면벡터", "공간도형", "공간좌표"]
         }
     ]
+    const [category, setCategory] = useState([]);
+
+    const onSave = () => {
+        setSelect(category);
+        setModalVisible(false);
+    }
 
     return (
-        <SafeAreaView style={styles.container}>
-            <View style={styles.header}>
-                <Icon name="close" color={'#fff'} size={20} />
-                <Text style={styles.title}>과목 선택</Text>
-                <Text style={styles.textSave}>저장</Text>
-            </View>
-            {/* <ScrollView>
-                <View style={styles.categories}>
-                    {categories1.map(category => <View>
-                        <View>
-                            <Text>{category.icon}</Text>
-                        </View>
-                        <Text>{category.subject}</Text>
-                    </View>)}
+        <Modal
+            animationType='slide'
+            transparent={true}
+            visible={modalVisible}
+            onRequestClose={() => {
+                setModalVisible(false);
+            }}
+        >
+            <SafeAreaView style={styles.container}>
+                <StatusBar style='light' />
+                <View style={styles.header}>
+                    <Icon name="close" color={'#fff'} size={20} />
+                    <Text style={styles.title}>과목 선택</Text>
+                    <TouchableOpacity onPress={onSave}>
+                        <Text style={styles.textSave}>저장</Text>
+                    </TouchableOpacity>
                 </View>
-            </ScrollView> */}
-            <SectionList
-                sections={subjects}
-                renderItem={({ item }) => <Item title={item} />}
-                renderSectionHeader={({ section: { title } }) => (
-                    <Text style={styles.header}>{title}</Text>
-                )}
-            />
-        </SafeAreaView>
+
+                <ScrollView horizontal={true} style={{marginBottom: 20}}>
+                    {category.map(e => 
+                        <View style={styles.selectedCover}>
+                            <Text style={styles.selectedCategories}>{e}</Text>
+                        </View>
+                    )}
+                </ScrollView>
+
+                <SectionList
+                    sections={subjects}
+                    renderItem={({ item }) => <Item title={item} categoryArr={category} setCategory={setCategory} />}
+                    renderSectionHeader={({ section: { title } }) => (
+                        <Text style={styles.subjectHeader}>{title}</Text>
+                    )}
+                />
+            </SafeAreaView>
+        </Modal>
     );
 }
 
-const Item = ( { title }) => (
-    <View>
-        <Text>{title}</Text>
-    </View>
-);
+function Item({title, setCategory, categoryArr}) {
+    const [isSelected, setIsSelected] = useState(false);
+
+    const onItemSelect = () => {
+        console.log(categoryArr);
+        if (isSelected) {
+            setIsSelected(false);
+            setCategory(categoryArr.filter(e => e !== title));
+        } else {
+            setIsSelected(true);
+            setCategory(e => [...e, title]);
+        }    
+    }
+
+    return (
+        <TouchableOpacity style={isSelected? styles.yesSelect : styles.noSelect} onPress={onItemSelect}>
+            <Text style={styles.item}>{title}</Text>
+        </TouchableOpacity>
+        
+    );
+}
 
 export default CategoryPage;
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: '#fff',
+        backgroundColor: '#000',
         width: '100%',
-        height: '100%'
-    },
+        height: '100%',
+    }, 
     header: {
         display: 'flex',
         flexDirection: 'row',
@@ -107,5 +131,33 @@ const styles = StyleSheet.create({
         display: 'flex',
         flexDirection: 'row',
         flexWrap: 'wrap'
+    },
+    subjectHeader: {
+        color: '#00cccc',
+        fontSize: 25,
+        fontWeight: '800',
+        marginBottom: 10,
+        backgroundColor: '#000'
+    },
+    item: {
+        color: '#fff',
+        fontSize: 20,
+        margin: 10,
+        marginLeft: 15
+    },
+    yesSelect: {
+        backgroundColor: '#555',
+        borderRadius: 10,
+        margin: 10 
+    },
+    selectedCover: {
+        backgroundColor: '#00cccc',
+        margin: 5,
+        borderRadius: 15,
+        padding: 10
+    },
+    selectedCategories: {
+        color: '#fff',
+        fontSize: 20
     }
 })

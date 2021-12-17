@@ -3,7 +3,6 @@ import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons'
 
 function Card({ prop, navigation }) {
-    
     const enterRoom = () => {
         navigation.navigate('room', {
             roomId: prop.id
@@ -17,8 +16,8 @@ function Card({ prop, navigation }) {
             style={styles.card}
             onPress={enterRoom}
         >
-            <Text style={styles.info}>{prop.subject}과목을 적으면 보여요 </Text>
-            <Text style={styles.title}>{prop.title}제목이라구</Text>
+            <Text style={styles.info}>{prop.subject}</Text>
+            <Text style={styles.title}>{prop.title}</Text>
             <View style={styles.profile}>{participent.map(person => <Text style={styles.emoji}>😆</Text>)}</View>
             <View style={styles.names}>{participent.map(person => <Text style={styles.name}>이름</Text>)}</View>
 

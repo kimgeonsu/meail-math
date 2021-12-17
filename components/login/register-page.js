@@ -16,7 +16,7 @@ function RegisterPage({ navigation }) {
     const [emoji, setEmoji] = useState('👩🏻‍🚀')
     
     const signupApi = async() => {
-        let res = await member.signup(id, pw, name, year, phoneNumber);
+        let res = await member.signup(id, pw, name, year, phoneNumber, emoji);
         console.log(res);
         navigation.navigate('login')
     }

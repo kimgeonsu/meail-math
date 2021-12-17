@@ -13,6 +13,7 @@ import RankingPage from './components/ranking/ranking-page';
 import RoomPage from './components/home/room';
 import FriendsPage from './components/fiends/friendsPage';
 import CategoryPage from './components/home/selectCategory';
+import SplashScreen from './components/login/splash-page';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -72,9 +73,10 @@ export default function App() {
           headerShown: false
         }}
       >
+        <Stack.Screen name="splashPafe" component={SplashScreen} />
         <Stack.Screen name="login" component={LoginPage} />
         <Stack.Screen name="register" component={RegisterPage} />
-        <Stack.Screen name="homeTab" component={HomeTabs} />
+        <Stack.Screen name="homeTab" component={HomeTabs} options={{gestureEnalbled: false}} />
         <Stack.Screen name="room" component={RoomPage} />
         <Stack.Screen name="categoryPage" component={CategoryPage} />
       </Stack.Navigator>

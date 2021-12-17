@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -7,6 +7,7 @@ import { member } from '../../service/api';
 function LoginPage({navigation}) {
     const [id, setId] = useState('');
     const [pw, setPw] = useState('');
+    const [userInfo, setUserInfo] = useState();
 
     const InputId = (input) => {
         setId(input);
@@ -15,16 +16,27 @@ function LoginPage({navigation}) {
         setPw(input);
     }
 
+    useEffect(() => {
+        AsyncStorage.getItem('userInfo', (err, result) => {
+            setUserInfo(JSON.parse(result));
+            console.log(result);
+        });
+        if (userInfo) {
+            navigation.navigate('homeTab');
+        }
+    }, [])
+
     const onLogin = async() => {
         try {
             let res = await member.login(id, pw);
             console.log(navigation);
-            navigation.navigate('homeTab');
             console.log(res);
             if (res) {
                 await AsyncStorage.setItem('userInfo', JSON.stringify(res));
+                navigation.navigate('homeTab');
             } else {
                 console.log("다시");
+                alert("아이디 또는 비밀번호가 맞지 않습니다")
             }
         } catch(e) {
             console.log(e);
@@ -49,7 +61,7 @@ function LoginPage({navigation}) {
                 value={pw}
             />
 
-            <TouchableOpacity activeOpacity={0.8} style={styles.btnLogin} onPress={() => {navigation.navigate('homeTab')}}>
+            <TouchableOpacity activeOpacity={0.8} style={styles.btnLogin} onPress={onLogin}>
                 <Text style={styles.loginText}>로그인</Text>
             </TouchableOpacity> 
 

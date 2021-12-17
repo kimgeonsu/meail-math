@@ -6,13 +6,14 @@ const api = axios.create({
 
 export const member = {
     //회원가입
-    signup: (id, password, name, year, phoneNumber) =>
+    signup: (id, password, name, year, phoneNumber, emoji) =>
         api.post(`auth/signup`, {
             username: id,
             password: password, 
             name: name,
             phoneNumber: phoneNumber,
-            year: year
+            year: year,
+            emoji: emoji
         })
         .then((res) => {
             return res.data;

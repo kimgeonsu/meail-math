@@ -5,6 +5,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 function RoomPage({ route, navigation}) {
     const { roomId } = route.params;
     const { count, start, stop, reset } = useCounter(0, 1000);
+    const [isStop, setIsStop] = useState(false);
 
     let min = Math.floor(count / 60);
     let hour = Math.floor(min / 60);
@@ -13,6 +14,15 @@ function RoomPage({ route, navigation}) {
 
     const exit = () => {
         navigation.navigate('homeTab')
+    }
+
+    const onStart = () => {
+        setIsStop(true);
+        start();
+    }
+    const onStop = () => {
+        setIsStop(false);
+        stop();
     }
 
     return (
@@ -44,13 +54,16 @@ function RoomPage({ route, navigation}) {
                     <Text style={styles.textExit}>나가기</Text>
                 </TouchableOpacity>
 
-                <TouchableOpacity style={styles.btnStop} onPress={stop}>
-                    <Text style={styles.textExit}>정지</Text>
-                </TouchableOpacity>
-
-                <TouchableOpacity style={styles.btnStop} onPress={start}>
-                    <Text style={styles.textStop}>재개</Text>
-                </TouchableOpacity>
+                {!isStop &&
+                    <TouchableOpacity style={styles.btnStart} onPress={onStart}>
+                        <Text style={styles.textStop}>시작</Text>
+                    </TouchableOpacity>
+                }
+                {isStop &&
+                    <TouchableOpacity style={styles.btnStop} onPress={onStop}>
+                        <Text style={styles.textStop}>정지</Text>
+                    </TouchableOpacity>
+                }
             </View>
         </SafeAreaView>
     );
@@ -177,7 +190,13 @@ const styles = StyleSheet.create({
     textExit: {
         fontSize: 15,
         color: '#fff'
-    }
+    },
+
+    btnStart: {
+        backgroundColor: '#00cccc',
+        borderRadius: 20,
+        padding: 15
+    },
 })
 
 export default RoomPage;

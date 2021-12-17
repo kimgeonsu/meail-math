@@ -16,12 +16,10 @@ function HomePage({ navigation }) {
     const [rooms, setRooms] = useState([]);
 
     useEffect(() => {
-        console.log("나는????");
         getRooms()
     }, []);
 
     useEffect(() => {
-        console.log("이건가욤");
     },[rooms])
 
     const getRooms = async() => {
@@ -41,6 +39,7 @@ function HomePage({ navigation }) {
     }
 
     const getModalVisible = (data) => {
+        getRooms();
         setModalVisible(data);
         console.log("hihi");
     }
