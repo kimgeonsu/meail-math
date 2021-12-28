@@ -1,11 +1,40 @@
-import React, { useState, useCallback, useRef } from 'react'
+import React, { useState, useCallback, useRef, useEffect } from 'react'
 import { StyleSheet, View, Text, TouchableOpacity, SafeAreaView  } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
+import io from "socket.io-client"
 
 function RoomPage({ route, navigation}) {
     const { roomId } = route.params;
     const { count, start, stop, reset } = useCounter(0, 1000);
     const [isStop, setIsStop] = useState(false);
+    const [userInfo, setUserInfo] = useState([]);
+    const [state, setState] = useState({name: "", ing: false});
+
+    const socketRef = useRef();
+    useEffect(() => {
+        socketRef.current = io.connect("http://3.145.136.64:8080");
+        socketRef.current.emit('joinRoom', {roomName: roomId});
+
+        socketRef.current.on("message", ({name, ing}) => {
+            // setUserInfo([...userInfo, {name, ing}]);
+        })
+        return () => socketRef.current.disconnect()
+    }, [userInfo]);
+
+    useEffect(() => {
+
+    }, []);
+
+    const getDetail = async() => {
+
+    };
+
+    const onMessageSubmit = (e) => {
+        const { name, ing} = state;
+        socketRef.current.emit("message", {name, ing});
+        e.preventDefault();
+        setState({name, ing});
+    }
 
     let min = Math.floor(count / 60);
     let hour = Math.floor(min / 60);
