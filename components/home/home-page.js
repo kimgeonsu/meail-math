@@ -1,7 +1,6 @@
 import React, { useState, useCallback, useRef, useEffect } from 'react'
-import { StyleSheet, View, Text, TouchableOpacity, SafeAreaView, SectionList, RefreshControl  } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity, SafeAreaView, SectionList, RefreshControl, ScrollView } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons'
-import { ScrollView } from 'react-native-gesture-handler';
 import { room } from '../../service/api';
 
 import Card from './card';
@@ -19,8 +18,8 @@ function HomePage({ navigation }) {
         getRooms()
     }, []);
 
-    useEffect(() => {
-    },[rooms])
+    // useEffect(() => {
+    // },[rooms])
 
     const getRooms = async() => {
         setRefreshing(true);
@@ -29,12 +28,23 @@ function HomePage({ navigation }) {
             let res =  await room.list();
             console.log(res.data);
             if (res) {
-                setRooms(res.data);
+                const arr = res.data;
+                let obj = {};
+                let tmpArr = [];
+                for (let i = 0; i < arr.length; i++) {
+                    obj['title'] = arr[i].title;
+                    obj['subject'] = arr[i].subject;
+                    obj['names'] = arr[i].participants.map(e => e.name);
+                    obj['emojis'] = arr[i].participants.map(e => e.emoji);
+                }
+
+                console.log(rooms);
                 setRefreshing(false);
+
             }
-            console.log(res);
+            // console.log(res);
         } catch(e) {
-            console.log(e);
+            console.log(e); 
         }
     }
 
