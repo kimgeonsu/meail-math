@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, Platform } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { member } from '../../service/api';
@@ -82,10 +82,10 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         backgroundColor: '#000',
         height: '100%',
-        width: '100%'
+        width: '100%',
+        paddingTop: Platform.OS === 'android' ? 25 : 0
     },
     title : {
-        // color: '#ffc000',
         fontSize: 80,
         fontWeight: 'bold',
         textAlign: 'center',

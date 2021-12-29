@@ -9,8 +9,6 @@ function Card({ prop, navigation }) {
         })
     }
 
-    const participent = [1,2,3,4,5,6,7,6];
-
     return (
         <TouchableOpacity 
             style={styles.card}
@@ -18,8 +16,8 @@ function Card({ prop, navigation }) {
         >
             <Text style={styles.info}>{prop.subject}</Text>
             <Text style={styles.title}>{prop.title}</Text>
-            <View style={styles.profile}>{participent.map(person => <Text style={styles.emoji}>😆</Text>)}</View>
-            <View style={styles.names}>{participent.map(person => <Text style={styles.name}>이름</Text>)}</View>
+            <View style={styles.profile}>{prop.emojis.map(person => <Text style={styles.emoji}>{person}</Text>)}</View>
+            <View style={styles.names}>{prop.names.map(person => <Text style={styles.name}>{person}</Text>)}</View>
 
             <Icon name="people" style={styles.iconPeople} color={'#fff'} size={15} />
         </TouchableOpacity>
