@@ -30,14 +30,15 @@ function HomePage({ navigation }) {
             if (res) {
                 const arr = res.data;
                 let obj = {};
-                let tmpArr = [];
                 for (let i = 0; i < arr.length; i++) {
                     obj['title'] = arr[i].title;
                     obj['subject'] = arr[i].subject;
                     obj['names'] = arr[i].participants.map(e => e.name);
                     obj['emojis'] = arr[i].participants.map(e => e.emoji);
+                    console.log(obj);
+                    setRooms([...rooms, obj]);
+                    console.log(rooms);
                 }
-
                 console.log(rooms);
                 setRefreshing(false);
 

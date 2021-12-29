@@ -2,6 +2,7 @@ import React, { useState, useCallback, useRef, useEffect } from 'react'
 import { StyleSheet, View, Text, TouchableOpacity, SafeAreaView  } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import io from "socket.io-client"
+import { room } from '../../service/api';
 
 function RoomPage({ route, navigation}) {
     const { roomId } = route.params;
@@ -11,22 +12,27 @@ function RoomPage({ route, navigation}) {
     const [state, setState] = useState({name: "", ing: false});
 
     const socketRef = useRef();
+    // useEffect(() => {
+    //     socketRef.current = io.connect("http://3.145.136.64:8080");
+    //     socketRef.current.emit('joinRoom', {roomName: roomId});
+
+    //     socketRef.current.on("message", ({name, ing}) => {
+    //         // setUserInfo([...userInfo, {name, ing}]);
+    //     })
+    //     return () => socketRef.current.disconnect()
+    // }, [userInfo]);
+
     useEffect(() => {
-        socketRef.current = io.connect("http://3.145.136.64:8080");
-        socketRef.current.emit('joinRoom', {roomName: roomId});
-
-        socketRef.current.on("message", ({name, ing}) => {
-            // setUserInfo([...userInfo, {name, ing}]);
-        })
-        return () => socketRef.current.disconnect()
-    }, [userInfo]);
-
-    useEffect(() => {
-
+        getDetail();
     }, []);
 
     const getDetail = async() => {
-
+        try {
+            let res = await room.detail(roomId);
+            console.log(res);
+        } catch (e) {
+            console.log(e);
+        }
     };
 
     const onMessageSubmit = (e) => {
