@@ -59,7 +59,7 @@ export const room = {
 
     list: () => api.get("room/list"),
 
-    detail: () => api.get(`room/detail`),
+    detail: (data) => api.get(`room/detail/${data}`),
 
     enter: (roomId, userId) => api.post("room/enterRoom", {
         title: roomId,
