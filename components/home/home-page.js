@@ -1,6 +1,8 @@
 import React, { useState, useCallback, useRef, useEffect } from 'react'
 import { StyleSheet, View, Text, TouchableOpacity, SafeAreaView, SectionList, RefreshControl, ScrollView } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons'
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 import { room } from '../../service/api';
 
 import Card from './card';
@@ -13,13 +15,16 @@ function HomePage({ navigation }) {
     const [modalVisible, setModalVisible] = useState(false);
     const [refreshing, setRefreshing] = useState(false);
     const [rooms, setRooms] = useState([]);
+    const [userInfo, setUserInfo] = useState();
 
     useEffect(() => {
         getRooms()
-    }, []);
 
-    // useEffect(() => {
-    // },[rooms])
+        AsyncStorage.getItem('userInfo', (err, result) => {
+            setUserInfo(JSON.parse(result));
+            console.log(result);
+        });
+    }, []);
 
     const getRooms = async() => {
         setRefreshing(true);
@@ -28,17 +33,7 @@ function HomePage({ navigation }) {
             let res =  await room.list();
             console.log(res.data);
             if (res) {
-                const arr = res.data;
-                let obj = {};
-                for (let i = 0; i < arr.length; i++) {
-                    obj['title'] = arr[i].title;
-                    obj['subject'] = arr[i].subject;
-                    obj['names'] = arr[i].participants.map(e => e.name);
-                    obj['emojis'] = arr[i].participants.map(e => e.emoji);
-                    console.log(obj);
-                    setRooms([...rooms, obj]);
-                    console.log(rooms);
-                }
+                setRooms(res.data);
                 console.log(rooms);
                 setRefreshing(false);
 
@@ -62,7 +57,7 @@ function HomePage({ navigation }) {
                 <Icon name="search" color={'#fff'} size={30} />
                 <View style={styles.headerRight}>
                     <Icon name="notifications" color={'#fff'} size={30} />
-                    <Text style={styles.profileIcon}>👨🏿‍🚀</Text>
+                    {/* {userInfo.emoji && <Text style={styles.profileIcon}>{userInfo.emoji}</Text>} */}
                 </View>
             </View>
             
@@ -81,14 +76,14 @@ function HomePage({ navigation }) {
                 {/* 방 목록 */}
                 <View>
                     <Text style={styles.textNow}>Now</Text>
-                    {rooms.map(room => (
+                    {rooms && rooms.map(room => (
                             <Card setData={setModalVisible} prop={room} navigation={navigation} />
                         ))}
                 </View>
             </ScrollView>
 
             <CreateRoom prop={modalVisible} navigation={navigation} getData={getModalVisible}/>
-            <Icon onPress={() => setModalVisible(true)} name="add-circle" style={styles.addCircle} color={'#fff'} size={50} />
+            <Icon onPress={() => setModalVisible(true)} name="add-circle" style={styles.addCircle} color='#fff' size={50} />
         </SafeAreaView>
     );
 }

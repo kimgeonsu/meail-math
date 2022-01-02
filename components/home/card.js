@@ -16,10 +16,13 @@ function Card({ prop, navigation }) {
         >
             <Text style={styles.info}>{prop.subject}</Text>
             <Text style={styles.title}>{prop.title}</Text>
-            <View style={styles.profile}>{prop.emojis.map(person => <Text style={styles.emoji}>{person}</Text>)}</View>
-            <View style={styles.names}>{prop.names.map(person => <Text style={styles.name}>{person}</Text>)}</View>
+            {prop.emojis && <View style={styles.profile}>{prop.emojis.map(person => <Text style={styles.emoji}>{person}</Text>)}</View>}
+            {prop.names && <View style={styles.names}>{prop.names.map(person => <Text style={styles.name}>{person}</Text>)}</View>}
 
-            <Icon name="people" style={styles.iconPeople} color={'#fff'} size={15} />
+            <View style={styles.wrap}>
+                <Icon name="people" style={styles.iconPeople} color='#fff' size={15} />
+                <Text style={styles.count}>13</Text>
+            </View>
         </TouchableOpacity>
     );
 }
@@ -67,5 +70,14 @@ const styles = StyleSheet.create({
     iconPeople: {
         marginTop: 10,
         marginLeft: 10
+    },
+    wrap: {
+        display: 'flex',
+        flexDirection: 'row',
+    },
+    count: {
+        color: '#fff',
+        marginTop: 8,
+        marginLeft: 5 
     }
 })

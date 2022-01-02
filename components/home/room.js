@@ -1,6 +1,8 @@
 import React, { useState, useCallback, useRef, useEffect } from 'react'
 import { StyleSheet, View, Text, TouchableOpacity, SafeAreaView  } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 import io from "socket.io-client"
 import { room } from '../../service/api';
 
@@ -8,6 +10,7 @@ function RoomPage({ route, navigation}) {
     const { roomId } = route.params;
     const { count, start, stop, reset } = useCounter(0, 1000);
     const [isStop, setIsStop] = useState(false);
+    const [roomInfo, setRoomInfo] = useState([]);
     const [userInfo, setUserInfo] = useState([]);
     const [state, setState] = useState({name: "", ing: false});
 
@@ -24,12 +27,18 @@ function RoomPage({ route, navigation}) {
 
     useEffect(() => {
         getDetail();
+
+        AsyncStorage.getItem('userInfo', (err, result) => {
+            setUserInfo(JSON.parse(result));
+            console.log(result);
+        });
     }, []);
 
     const getDetail = async() => {
         try {
             let res = await room.detail(roomId);
-            console.log(res);
+            console.log(res.data);
+            setRoomInfo(res.data);
         } catch (e) {
             console.log(e);
         }
@@ -51,9 +60,11 @@ function RoomPage({ route, navigation}) {
         navigation.navigate('homeTab')
     }
 
-    const onStart = () => {
+    const onStart = async() => {
         setIsStop(true);
         start();
+        // let res = await room.enter(roomId, userInfo.name, userInfo.emoji);
+        console.log(res);
     }
     const onStop = () => {
         setIsStop(false);
@@ -64,7 +75,7 @@ function RoomPage({ route, navigation}) {
         <SafeAreaView style={styles.container}>
             {/* 헤더 */}
             <View style={styles.header}>
-                <Text style={styles.title}>제목이 들어가는 자리에요</Text>
+                <Text style={styles.title}>{roomInfo.title}</Text>
             </View>
 
             {/* 내 시간 배너 */}
@@ -75,10 +86,10 @@ function RoomPage({ route, navigation}) {
             {/* 친구들 */}
             <ScrollView>
                 <View style={styles.userTable}>
-                    {tmp.map(user => <View style={styles.friends}>
-                        <Text style={styles.name}>이름</Text>
-                        <Text style={styles.profile}>👨🏿‍🚀</Text>
-                        <Text style={styles.friendTime}>00:00:00</Text>
+                    {roomInfo.participants && roomInfo.participants.map(user => <View style={styles.friends}>
+                        <Text style={styles.name}>{user.name}</Text>
+                        <Text style={styles.profile}>{user.emoji}</Text>
+                        <Text style={styles.friendTime}>{user.time}</Text>
                     </View>)}
                 </View>
             </ScrollView>
