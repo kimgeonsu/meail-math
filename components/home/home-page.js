@@ -57,7 +57,7 @@ function HomePage({ navigation }) {
                 <Icon name="search" color={'#fff'} size={30} />
                 <View style={styles.headerRight}>
                     <Icon name="notifications" color={'#fff'} size={30} />
-                    {/* {userInfo.emoji && <Text style={styles.profileIcon}>{userInfo.emoji}</Text>} */}
+                    {userInfo && <Text style={styles.profileIcon}>{userInfo.emoji}</Text>}
                 </View>
             </View>
             

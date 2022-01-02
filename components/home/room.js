@@ -5,6 +5,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import io from "socket.io-client"
 import { room } from '../../service/api';
+import RoomUser from './roomUser';
 
 function RoomPage({ route, navigation}) {
     const { roomId } = route.params;
@@ -13,17 +14,7 @@ function RoomPage({ route, navigation}) {
     const [roomInfo, setRoomInfo] = useState([]);
     const [userInfo, setUserInfo] = useState([]);
     const [state, setState] = useState({name: "", ing: false});
-
-    const socketRef = useRef();
-    // useEffect(() => {
-    //     socketRef.current = io.connect("http://3.145.136.64:8080");
-    //     socketRef.current.emit('joinRoom', {roomName: roomId});
-
-    //     socketRef.current.on("message", ({name, ing}) => {
-    //         // setUserInfo([...userInfo, {name, ing}]);
-    //     })
-    //     return () => socketRef.current.disconnect()
-    // }, [userInfo]);
+    const [isEnter, setIsEnter] = useState(false);
 
     useEffect(() => {
         getDetail();
@@ -51,20 +42,23 @@ function RoomPage({ route, navigation}) {
         setState({name, ing});
     }
 
-    let min = Math.floor(count / 60);
-    let hour = Math.floor(min / 60);
 
-    const tmp = [1,2,3,4,5,6,7,8,9,10,11,12,13,14];
 
-    const exit = () => {
+    const exit = async() => {
+        let res = await room.exit(roomId, userInfo.name);
+        console.log(res);
         navigation.navigate('homeTab')
     }
 
     const onStart = async() => {
         setIsStop(true);
         start();
-        // let res = await room.enter(roomId, userInfo.name, userInfo.emoji);
-        console.log(res);
+        if (!isEnter) {
+            let res = await room.enter(roomId, userInfo.name, userInfo.emoji);
+            console.log(res);
+            setIsEnter(true);
+        }
+        console.log("res : ", res);
     }
     const onStop = () => {
         setIsStop(false);
@@ -80,17 +74,13 @@ function RoomPage({ route, navigation}) {
 
             {/* 내 시간 배너 */}
             <View style={styles.timeWrapper}>
-                <Text style={styles.time}>{hour} : {min % 60} : {count % 60}</Text>
+                <Text style={styles.time}>{timeConverter(count)}</Text>
             </View>
 
             {/* 친구들 */}
             <ScrollView>
                 <View style={styles.userTable}>
-                    {roomInfo.participants && roomInfo.participants.map(user => <View style={styles.friends}>
-                        <Text style={styles.name}>{user.name}</Text>
-                        <Text style={styles.profile}>{user.emoji}</Text>
-                        <Text style={styles.friendTime}>{user.time}</Text>
-                    </View>)}
+                    {roomInfo.participants && roomInfo.participants.map(user => <RoomUser prop={user} />)}
                 </View>
             </ScrollView>
             
@@ -142,6 +132,13 @@ function useCounter(initialValue, ms) {
     return { count, start, stop, reset };
 }
 
+function timeConverter(data) {
+    let min = Math.floor(data / 60);
+    let hour = Math.floor(min / 60);
+
+    return (hour < 10 ? '0'+ hour : hour) + ":" + (min % 60 < 10 ? '0'+(min%60) : (min%60)) + ":" + (data % 60 < 10 ? '0'+(data % 60): (data%60));
+}
+
 const styles = StyleSheet.create({
     container: {
         backgroundColor: '#000',
@@ -180,28 +177,6 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         flexWrap: 'wrap',
         // margin: 5
-    },
-
-    profile: {
-        fontSize: 100,
-        color: '#fff',
-        textAlign: 'center'
-    },
-
-    friends: {
-        width: '33%',
-        marginBottom: 15
-    },
-
-    name: {
-        textAlign: 'center',
-        color: 'lightgray'
-    },
-
-    friendTime: {
-        fontSize: 20,
-        color: '#fff',
-        textAlign: 'center'
     },
 
     footer: {

@@ -14,8 +14,16 @@ function CreateRoom({ prop, navigation, getData }) {
     
     const onCreateRoom = async() => {
         try {
-            let res = await room.create(title, "미적분", "안녕");
+            let assemeble = '';
+            for (let i = 0; i < subjects.length; i++) {
+                assemeble += subjects[i];
+                if (i !== subjects.length - 1) {
+                    assemeble += ', ';
+                }
+            }
+            let res = await room.create(title, assemeble, "안녕");
             setTitle('');
+            setSubjects([]);
             getData(false);
         } catch(e) {
             console.log(e);

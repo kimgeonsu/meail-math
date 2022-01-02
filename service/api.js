@@ -61,19 +61,32 @@ export const room = {
 
     detail: (data) => api.get(`room/detail/${data}`),
 
-    enter: (roomId, name, emoji) => api.post("room/enterRoom", {
+    enter: (roomId, name, emoji) => api.post("room/enter", {
         roomId: roomId,
         name: name,
         emoji: emoji
     })
-    .then(res => {return res.data;})
+    .then(res => {return res})
     .catch(e => {console.log(e);})
     ,
 
-    exit: (roomId, name) => api.post("room/exitRoom", {
+    exit: (roomId, name) => api.post("room/exit", {
         roomId: roomId,
         name: name
     })
     .then(res => {return res.data})
     .catch(e => {console.log(e);})
+}
+
+export const timer = {
+    allTime: (name) => api.get("timer/allTime", {
+        name: name
+    }),
+
+    rank: () => api.get("timer/rank"),
+
+    create: (time) => api.post("timer/createTime", {
+        time: time
+    }),
+
 }

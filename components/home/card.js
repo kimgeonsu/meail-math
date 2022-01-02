@@ -21,7 +21,7 @@ function Card({ prop, navigation }) {
 
             <View style={styles.wrap}>
                 <Icon name="people" style={styles.iconPeople} color='#fff' size={15} />
-                <Text style={styles.count}>13</Text>
+                <Text style={styles.count}>{prop.names? prop.names.length : '0'}</Text>
             </View>
         </TouchableOpacity>
     );
