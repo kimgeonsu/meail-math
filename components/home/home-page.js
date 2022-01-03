@@ -70,7 +70,7 @@ function HomePage({ navigation }) {
                     />
                 }
             >
-                <TimeBanner />
+                <TimeBanner prop={userInfo}/>
                 <StudyGraph />
 
                 {/* 방 목록 */}

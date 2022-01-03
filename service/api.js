@@ -88,6 +88,14 @@ export const timer = {
 
     create: (time) => api.post("time/createTime", {
         time: time
-    }),
+    })
+    .then(res => {return res.data})
+    .catch(e => {console.log(e)}),
 
+    update: (id, time) => api.put("time/updateTime", {
+        userId: id,
+        time: time
+    })
+    .then(res => {return res.data})
+    .catch(e => {console.log(e);}),
 }
