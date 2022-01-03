@@ -40,6 +40,7 @@ export const member = {
         password: password
     })
     .then(res => {
+        api.defaults.headers.common['Authorization'] = `Bearer ${res.data.token}`
         return res.data;
     })
     .catch(e => {
@@ -79,13 +80,13 @@ export const room = {
 }
 
 export const timer = {
-    allTime: (name) => api.get("timer/allTime", {
+    allTime: (name) => api.get("time/allTime", {
         name: name
     }),
 
-    rank: () => api.get("timer/rank"),
+    rank: () => api.get("time/rank"),
 
-    create: (time) => api.post("timer/createTime", {
+    create: (time) => api.post("time/createTime", {
         time: time
     }),
 
