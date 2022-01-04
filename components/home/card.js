@@ -7,6 +7,7 @@ function Card({ prop, navigation }) {
         navigation.navigate('room', {
             roomId: prop.id
         })
+        //navigation.navigate('login');
     }
 
     return (

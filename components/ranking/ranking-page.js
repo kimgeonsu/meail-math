@@ -4,43 +4,57 @@ import { ScrollView } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import { timer } from '../../service/api';
 
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+
 function RankingPage() {
     const [rankingObjs, setrankingObjs] = useState([]);
-
+    const [myRank, setMyRank] = useState();
+    const [userInfo, setUserInfo] = useState();
     useEffect(() => {
+        AsyncStorage.getItem('userInfo', (err, result) => {
+            setUserInfo(JSON.parse(result));
+            console.log(result);
+        });
+
         getRanking();
     }, []);
 
     const getRanking = async() => {
         let res = await timer.rank();
         console.log(res.data);
-    }
+        setrankingObjs(res.data);
 
-    const tmp = [1,2,3,4,5,6,7,8,9,1,2,3,4,5,6,7,8,9];
+        if (userInfo) {
+            let filter = rankingObjs.fiter(e => e.name === userInfo.name);
+            setMyRank(filter[0]);
+        }
+    }
 
     return (
         <SafeAreaView style={styles.container}>
             <Text style={styles.title}>랭킹</Text>
-            <View style={styles.myRankWrapper}>
-                <View style={styles.nameProfileWrapper}>
-                    <Text style={styles.profileIcon}>👨🏿‍🚀</Text>
-                    <View>
-                        <Text style={styles.name}>이름</Text>
-                        <Text style={styles.myTime}>00:00:00</Text>
+            {myRank && 
+                <View style={styles.myRankWrapper}>
+                    <View style={styles.nameProfileWrapper}>
+                        <Text style={styles.profileIcon}>{myRank.emoji}</Text>
+                        <View>
+                            <Text style={styles.name}>{myRank.name}</Text>
+                            <Text style={styles.myTime}>{timeConverter(myRank.time)}</Text>
+                        </View>
                     </View>
-                </View>
-                <Text style={styles.myRank}>5등</Text>
-            </View>
+                    <Text style={styles.myRank}>5등</Text>
+                </View>}
             <ScrollView>
-                {tmp.map(item => <View style={styles.friends}>
-                    <Text style={styles.ranking}>3</Text>
-                    <Text style={styles.profileIcon}>👨🏿‍🚀</Text>
+                {rankingObjs.map((item, idx) => <View style={styles.friends}>
+                    <Text style={styles.ranking}>{idx+1}</Text>
+                    <Text style={styles.profileIcon}>{item.emoji}</Text>
                     <View>
-                        <Text style={styles.rankerName}>이름</Text>
+                        <Text style={styles.rankerName}>{item.name}</Text>
                         <Text style={styles.rankerGrade}>고1</Text>
                     </View>
                     <Icon name="schedule" color='#fff' size={30} style={styles.iconTime} />
-                    <Text style={styles.rankerTime}>00:00:00</Text>
+                    <Text style={styles.rankerTime}>{timeConverter(item.time)}</Text>
                 </View>)}
             </ScrollView>
         </SafeAreaView>
