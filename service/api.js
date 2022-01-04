@@ -45,7 +45,9 @@ export const member = {
     })
     .catch(e => {
         console.log(e);
-    })
+    }),
+
+    me: () => api.get("auth/me"), 
 }
 
 export const room = {
@@ -80,14 +82,11 @@ export const room = {
 }
 
 export const timer = {
-    allTime: (name) => api.get("time/allTime", {
-        name: name
-    }),
+    rank: () => api.get("timer/ranking"),
 
-    rank: () => api.get("time/rank"),
+    create: () => api.post("timer/createTime"),
 
-    create: (time) => api.post("time/createTime", {
+    update: (time) => api.put("timer/updateTime", {
         time: time
-    }),
-
+    })
 }
