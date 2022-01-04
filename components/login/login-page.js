@@ -21,9 +21,8 @@ function LoginPage({navigation}) {
             setUserInfo(JSON.parse(result));
             console.log(result);
         });
-        // AsyncStorage.removeItem('userInfo');
         if (userInfo) {
-            // navigation.navigate('homeTab');
+            navigation.navigate('homeTab');
         }
     }, [])
 

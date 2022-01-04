@@ -89,4 +89,16 @@ export const timer = {
     update: (time) => api.put("timer/updateTime", {
         time: time
     })
+<<<<<<< HEAD
+=======
+    .then(res => {return res.data})
+    .catch(e => {console.log(e)}),
+
+    update: (id, time) => api.put("time/updateTime", {
+        userId: id,
+        time: time
+    })
+    .then(res => {return res.data})
+    .catch(e => {console.log(e);}),
+>>>>>>> 6b94f49ae61343546a7013cbc70d2eead46cc7fa
 }

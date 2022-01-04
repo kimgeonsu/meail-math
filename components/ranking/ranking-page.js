@@ -1,10 +1,21 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, SafeAreaView, StyleSheet } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/MaterialIcons'
+import { timer } from '../../service/api';
 
 function RankingPage() {
-    
+    const [rankingObjs, setrankingObjs] = useState([]);
+
+    useEffect(() => {
+        getRanking();
+    }, []);
+
+    const getRanking = async() => {
+        let res = await timer.rank();
+        console.log(res.data);
+    }
+
     const tmp = [1,2,3,4,5,6,7,8,9,1,2,3,4,5,6,7,8,9];
 
     return (
@@ -34,6 +45,13 @@ function RankingPage() {
             </ScrollView>
         </SafeAreaView>
     );
+}
+
+function timeConverter(data) {
+    let min = Math.floor(data / 60);
+    let hour = Math.floor(min / 60);
+
+    return (hour < 10 ? '0'+ hour : hour) + ":" + (min % 60 < 10 ? '0'+(min%60) : (min%60)) + ":" + (data % 60 < 10 ? '0'+(data % 60): (data%60));
 }
 
 export default RankingPage;
