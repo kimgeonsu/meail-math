@@ -7,6 +7,10 @@ import io from "socket.io-client"
 import { room } from '../../service/api';
 import RoomUser from './roomUser';
 
+const ENDPOINT = "http://3.145.136.64:8080"
+
+let socket;
+
 function RoomPage({ route, navigation}) {
     const { roomId } = route.params;
     const { count, start, stop, reset } = useCounter(0, 1000);
@@ -16,6 +20,23 @@ function RoomPage({ route, navigation}) {
     const [state, setState] = useState({name: "", ing: false});
     const [isEnter, setIsEnter] = useState(false);
 
+    const [message, setMessage] = useState('')
+    const [messages, setMessages] = useState([]);
+    const [users, setUsers] = useState('');
+
+    useEffect(() => {
+        socket = io(ENDPOINT);
+
+        if (userInfo) {
+            let name = userInfo.name
+            socket.emit('join', { name, roomId }, (error) => {
+            if (error) {
+                alert(error);
+            }
+        })
+        }
+    }, [ENDPOINT])
+
     useEffect(() => {
         getDetail();
 
@@ -23,6 +44,13 @@ function RoomPage({ route, navigation}) {
             setUserInfo(JSON.parse(result));
             console.log(result);
         });
+
+        socket.on('message', (message) => {
+            setMessages((messages) => [...messages, message]);
+        })
+        socket.on('roomData', ({ users }) => {
+            setUsers(users)
+        })
     }, []);
 
     const getDetail = async() => {
@@ -35,11 +63,12 @@ function RoomPage({ route, navigation}) {
         }
     };
 
-    const onMessageSubmit = (e) => {
-        const { name, ing} = state;
-        socketRef.current.emit("message", {name, ing});
-        e.preventDefault();
-        setState({name, ing});
+    const sendMessage = (event) => {
+        event.preventDefault()
+    
+        if (message) {
+            socket.emit('sendMessage', message, () => setMessage(''))
+        }
     }
 
 
@@ -57,6 +86,8 @@ function RoomPage({ route, navigation}) {
             let res = await room.enter(roomId, userInfo.name, userInfo.emoji);
             console.log(res);
             setIsEnter(true);
+
+            
         }
         console.log("res : ", res);
     }
