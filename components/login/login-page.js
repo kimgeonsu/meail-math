@@ -21,9 +21,6 @@ function LoginPage({navigation}) {
             setUserInfo(JSON.parse(result));
             console.log(result);
         });
-        if (userInfo) {
-            navigation.navigate('homeTab');
-        }
     }, [])
 
     const onLogin = async() => {
@@ -46,7 +43,7 @@ function LoginPage({navigation}) {
 
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>👩🏻‍🚀</Text>
+            <Text style={styles.title}>매일의 수학</Text>
             <TextInput
                 style={styles.input}
                 placeholder="닉네임"
@@ -86,10 +83,11 @@ const styles = StyleSheet.create({
         paddingTop: Platform.OS === 'android' ? 25 : 0
     },
     title : {
-        fontSize: 80,
+        fontSize: 60,
         fontWeight: 'bold',
         textAlign: 'center',
-        marginBottom: 30
+        marginBottom: 30,
+        color:'#fff'
     },
     input : {
         backgroundColor: '#ddd',

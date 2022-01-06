@@ -1,8 +1,7 @@
 import { Picker } from "@react-native-picker/picker";
 import React, { useState } from "react";
-import {SafeAreaView, View, StyleSheet, Text, TextInput, TouchableOpacity} from 'react-native';
-import KeyboardAvoidingView from "react-native/Libraries/Components/Keyboard/KeyboardAvoidingView";
-import { member } from "../../service/api";
+import {SafeAreaView, View, StyleSheet, Text, TextInput, TouchableOpacity, KeyboardAvoidingView } from 'react-native';
+import { member, timer } from "../../service/api";
 
 function RegisterPage({ navigation }) {
     const [step, setStep] = useState(1);
@@ -17,6 +16,8 @@ function RegisterPage({ navigation }) {
     
     const signupApi = async() => {
         let res = await member.signup(id, pw, name, year, phoneNumber, emoji);
+        let create = await timer.create();
+        console.log(create);
         console.log(res);
         navigation.navigate('login')
     }
@@ -122,6 +123,7 @@ function RegisterPage({ navigation }) {
                             keyboardType="number-pad"
                             onChangeText={(e) => {setPhoneNumber(e); checkPhoneNumber()}}
                             value={phoneNumber}
+                            maxLength={11}
                         />
                     </View>
                 }

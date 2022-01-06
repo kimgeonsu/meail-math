@@ -1,10 +1,20 @@
 import React, { useState, useCallback, useRef, useEffect } from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, SafeAreaView, SectionList  } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity, SafeAreaView, SectionList } from 'react-native';
+import { useFocusEffect } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { timer } from '../../service/api';
+import { member } from '../../service/api';
 
-function TimeBanner({ prop }) {
+function TimeBanner() {
     const [myTime, setMyTime] = useState();
+
+    useFocusEffect(
+        React.useCallback(() => {
+            getTime();
+            return () => {
+                console.log("not focus");
+            }
+        }, [])
+    )
 
     useEffect(() => {
         getTime();
@@ -12,18 +22,18 @@ function TimeBanner({ prop }) {
 
     const getTime = async() => {
         try {
-            let res = await timer.allTime(prop.name);
+            let res = await member.me();
             console.log("time : ", res.data);
-
+            setMyTime(res.data);
         } catch(e) {
-            console.log(e);
+            console.log("error", e);
         }
     }
 
     return (
         <View style={styles.banner}>
             <Text style={styles.title}>지금까지 공부한 시간</Text>
-            <Text style={styles.time}>00:00:00</Text>
+            {myTime && <Text style={styles.time}>{timeConverter(myTime.time)}</Text>}
         </View>
     );
 }

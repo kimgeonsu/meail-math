@@ -1,6 +1,4 @@
 import React from 'react';
-import { StyleSheet, Text, TextInput, View } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -73,11 +71,11 @@ export default function App() {
           headerShown: false
         }}
       >
-        <Stack.Screen name="splashPafe" component={SplashScreen} />
+        <Stack.Screen name="splashPage" component={SplashScreen} />
         <Stack.Screen name="login" component={LoginPage} />
         <Stack.Screen name="register" component={RegisterPage} />
         <Stack.Screen name="homeTab" component={HomeTabs} options={{gestureEnalbled: false}} />
-        <Stack.Screen name="room" component={RoomPage} />
+        <Stack.Screen name="room" component={RoomPage} options={{gestureEnalbled: false}} />
         <Stack.Screen name="categoryPage" component={CategoryPage} />
       </Stack.Navigator>
     </NavigationContainer>

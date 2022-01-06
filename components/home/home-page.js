@@ -2,6 +2,7 @@ import React, { useState, useCallback, useRef, useEffect } from 'react'
 import { StyleSheet, View, Text, TouchableOpacity, SafeAreaView, SectionList, RefreshControl, ScrollView } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useFocusEffect } from '@react-navigation/native';
 
 import { room } from '../../service/api';
 
@@ -16,6 +17,15 @@ function HomePage({ navigation }) {
     const [refreshing, setRefreshing] = useState(false);
     const [rooms, setRooms] = useState([]);
     const [userInfo, setUserInfo] = useState();
+
+    useFocusEffect(
+        React.useCallback(() => {
+            getRooms();
+            return () => {
+                console.log("not focus");
+            }
+        }, [])
+    )
 
     useEffect(() => {
         getRooms()
@@ -70,7 +80,7 @@ function HomePage({ navigation }) {
                     />
                 }
             >
-                <TimeBanner prop={userInfo}/>
+                {userInfo && <TimeBanner prop={userInfo.name}/>}
                 <StudyGraph />
 
                 {/* 방 목록 */}

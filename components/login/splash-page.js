@@ -11,7 +11,7 @@ const SplashScreen = ({navigation}) => {
     setTimeout(() => {
 		setAnimating(false);
 		AsyncStorage.getItem('userInfo').then((value) =>
-        navigation.replace(value === null ? 'login' : 'homeTab'),
+        navigation.replace(value === null ? 'login' : 'login'),
 		);
     }, 3000);
 	}, []);

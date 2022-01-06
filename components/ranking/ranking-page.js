@@ -2,15 +2,26 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, SafeAreaView, StyleSheet } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/MaterialIcons'
+import { useFocusEffect } from '@react-navigation/native';
+
 import { timer } from '../../service/api';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
 
 function RankingPage() {
     const [rankingObjs, setrankingObjs] = useState([]);
     const [myRank, setMyRank] = useState();
     const [userInfo, setUserInfo] = useState();
+
+    useFocusEffect(
+        React.useCallback(() => {
+            getRanking();
+            return () => {
+                console.log("not focus");
+            }
+        }, [])
+    );
+
     useEffect(() => {
         AsyncStorage.getItem('userInfo', (err, result) => {
             setUserInfo(JSON.parse(result));
@@ -51,7 +62,7 @@ function RankingPage() {
                     <Text style={styles.profileIcon}>{item.emoji}</Text>
                     <View>
                         <Text style={styles.rankerName}>{item.name}</Text>
-                        <Text style={styles.rankerGrade}>고1</Text>
+                        <Text style={styles.rankerGrade}>{yearConverter(item.year)}</Text>
                     </View>
                     <Icon name="schedule" color='#fff' size={30} style={styles.iconTime} />
                     <Text style={styles.rankerTime}>{timeConverter(item.time)}</Text>
@@ -66,6 +77,25 @@ function timeConverter(data) {
     let hour = Math.floor(min / 60);
 
     return (hour < 10 ? '0'+ hour : hour) + ":" + (min % 60 < 10 ? '0'+(min%60) : (min%60)) + ":" + (data % 60 < 10 ? '0'+(data % 60): (data%60));
+}
+
+function yearConverter(data) {
+    switch (data) {
+        case 14:
+            return '중1'
+        case 15:
+            return '중2'
+        case 16:
+            return '중3'
+        case 17:
+            return '고1'
+        case 18:
+            return '고2'
+        case 19:
+            return '고3'
+        default:
+            break;
+    }
 }
 
 export default RankingPage;

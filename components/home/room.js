@@ -4,7 +4,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import io from "socket.io-client"
-import { room } from '../../service/api';
+import { room, timer } from '../../service/api';
 import RoomUser from './roomUser';
 
 function RoomPage({ route, navigation}) {
@@ -42,8 +42,6 @@ function RoomPage({ route, navigation}) {
         setState({name, ing});
     }
 
-
-
     const exit = async() => {
         let res = await room.exit(roomId, userInfo.name);
         console.log(res);
@@ -54,15 +52,25 @@ function RoomPage({ route, navigation}) {
         setIsStop(true);
         start();
         if (!isEnter) {
-            let res = await room.enter(roomId, userInfo.name, userInfo.emoji);
-            console.log(res);
-            setIsEnter(true);
+            try {
+                let res = await room.enter(roomId, userInfo.name, userInfo.emoji);
+                console.log(res);
+                setIsEnter(true);
+            } catch (e) {
+                console.log(e);
+            }
         }
         console.log("res : ", res);
     }
-    const onStop = () => {
+    const onStop = async() => {
         setIsStop(false);
         stop();
+        try {
+            let update = await timer.update(count);
+            console.log(update);
+        } catch (e) {
+            console.log(e);
+        }
     }
 
     return (

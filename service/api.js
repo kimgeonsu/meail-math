@@ -16,6 +16,7 @@ export const member = {
             emoji: emoji
         })
         .then((res) => {
+            api.defaults.headers.common['Authorization'] = `Bearer ${res.data.token}`
             return res.data;
         })
         .catch(e => {
@@ -84,18 +85,13 @@ export const room = {
 export const timer = {
     rank: () => api.get("timer/ranking"),
 
-    create: () => api.post("timer/createTime"),
+    create: () => api.post("timer/createTime", {
+        time: 0
+    }),
 
     update: (time) => api.put("timer/updateTime", {
         time: time
     })
     .then(res => {return res.data})
     .catch(e => {console.log(e)}),
-
-    update: (id, time) => api.put("time/updateTime", {
-        userId: id,
-        time: time
-    })
-    .then(res => {return res.data})
-    .catch(e => {console.log(e);}),
 }
