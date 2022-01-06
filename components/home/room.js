@@ -7,9 +7,9 @@ import io from "socket.io-client"
 import { room, timer } from '../../service/api';
 import RoomUser from './roomUser';
 
-const ENDPOINT = "http://3.145.136.64:8080"
+// const ENDPOINT = "http://3.145.136.64:8080"
 
-let socket;
+// let socket;
 
 function RoomPage({ route, navigation}) {
     const { roomId } = route.params;
@@ -24,18 +24,18 @@ function RoomPage({ route, navigation}) {
     const [messages, setMessages] = useState([]);
     const [users, setUsers] = useState('');
 
-    useEffect(() => {
-        socket = io(ENDPOINT);
+    // useEffect(() => {
+    //     socket = io(ENDPOINT);
 
-        if (userInfo) {
-            let name = userInfo.name
-            socket.emit('join', { name, roomId }, (error) => {
-            if (error) {
-                alert(error);
-            }
-        })
-        }
-    }, [ENDPOINT])
+    //     if (userInfo) {
+    //         let name = userInfo.name
+    //         socket.emit('join', { name, roomId }, (error) => {
+    //         if (error) {
+    //             alert(error);
+    //         }
+    //     })
+    //     }
+    // }, [ENDPOINT])
 
     useEffect(() => {
         getDetail();
@@ -63,13 +63,13 @@ function RoomPage({ route, navigation}) {
         }
     };
 
-    const sendMessage = (event) => {
-        event.preventDefault()
+    // const sendMessage = (event) => {
+    //     event.preventDefault()
     
-        if (message) {
-            socket.emit('sendMessage', message, () => setMessage(''))
-        }
-    }
+    //     if (message) {
+    //         socket.emit('sendMessage', message, () => setMessage(''))
+    //     }
+    // }
 
     const exit = async() => {
         let res = await room.exit(roomId, userInfo.name);
